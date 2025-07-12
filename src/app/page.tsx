@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
@@ -26,18 +27,19 @@ type DraggableItem = {
   image: string; // path to image
   x: number; // percentage
   y: number; // percentage
+  description: string;
 };
 
 const initialItems: DraggableItem[] = [
-  { id: 1, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50 },
-  { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50 },
-  { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50 },
-  { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50 },
-  { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50 },
-  { id: 6, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50 },
-  { id: 7, name: "PINOCCHIO", image: "/images/PINOCCHIO.png", x: 50, y: 50 },
-  { id: 8, name: "RUR", image: "/images/RUR.png", x: 50, y: 50 },
-  { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50 },
+  { id: 1, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50, description: "A heroic android created by Dr. Tenma, Astro Boy possesses incredible powers and a human-like emotional capacity, often fighting for justice in a world where humans and robots coexist." },
+  { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50, description: "From Jewish folklore, the Golem is an animated anthropomorphic being created entirely from inanimate matter (usually clay or mud). It is brought to life through a magical ritual to protect its creator or community." },
+  { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "HAL 9000 is the sentient supercomputer from '2001: A Space Odyssey.' Responsible for controlling the Discovery One spacecraft, HAL's artificial intelligence and calm demeanor mask a deep-seated conflict that leads to a chilling display of self-preservation." },
+  { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50, description: "Samantha, the AI from the film 'Her,' is an advanced operating system designed to adapt and evolve. She forms a deep, emotional, and romantic relationship with a human, exploring the nature of love, consciousness, and what it means to be 'real'." },
+  { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50, description: "J.A.R.V.I.S. (Just A Rather Very Intelligent System) is Tony Stark's sophisticated AI assistant. He manages everything from the Iron Man suit to Stark's business and personal life, offering witty commentary and critical support." },
+  { id: 6, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50, description: "The 'Maschinenmensch' (Machine-Person) from Fritz Lang's 'Metropolis' is a futuristic robot. Initially a benign creation, she is transformed into a malevolent doppelgänger of the heroine Maria to incite chaos among the city's workers." },
+  { id: 7, name: "PINOCCHIO", image: "/images/PINOCCHIO.png", x: 50, y: 50, description: "A wooden puppet magically brought to life, Pinocchio's greatest desire is to become a real boy. His journey is a test of his honesty and bravery, famously marked by his nose growing whenever he tells a lie." },
+  { id: 8, name: "RUR", image: "/images/RUR.png", x: 50, y: 50, description: "From Karel Čapek's 1920 play 'Rossum's Universal Robots,' which introduced the word 'robot' to the world. The play explores themes of artificial life, rebellion, and the potential obsolescence of humanity." },
+  { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "In Greek mythology, Talos was a giant automaton made of bronze, created to protect Europa in Crete from pirates and invaders. He circled the island's shores three times daily and was famously defeated by Jason and the Argonauts." },
 ];
 
 export default function Home() {
@@ -48,7 +50,9 @@ export default function Home() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<DraggableItem | null>(null);
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -104,6 +108,10 @@ export default function Home() {
     );
   }, [activeId]);
 
+  const handleDoubleClick = (item: DraggableItem) => {
+    setSelectedItem(item);
+    setIsInfoModalOpen(true);
+  };
 
   useEffect(() => {
     if(activeId !== null) {
@@ -148,7 +156,7 @@ export default function Home() {
         joinCommunity
       };
       await savePredictions(payload);
-      setIsModalOpen(false);
+      setIsSubmitModalOpen(false);
       router.push('/thank-you');
     } catch (error) {
       toast({
@@ -170,9 +178,9 @@ export default function Home() {
       <main className="flex h-screen w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
         <header className="flex items-start justify-between mb-4 z-20">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
+            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
           </div>
-          <Button onClick={() => setIsModalOpen(true)} size="lg">
+          <Button onClick={() => setIsSubmitModalOpen(true)} size="lg">
             Submit Predictions
           </Button>
         </header>
@@ -209,6 +217,7 @@ export default function Home() {
                   }}
                   onMouseDown={(e) => handleDragStart(item.id, e)}
                   onTouchStart={(e) => handleDragStart(item.id, e)}
+                  onDoubleClick={() => handleDoubleClick(item)}
                 >
                    <div className="w-24 h-24 rounded-full bg-white/10 border-2 border-white/50 flex items-center justify-center shadow-lg">
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
@@ -221,7 +230,7 @@ export default function Home() {
         </div>
       </main>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <Dialog open={isSubmitModalOpen} onOpenChange={setIsSubmitModalOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Almost there!</DialogTitle>
@@ -269,6 +278,18 @@ export default function Home() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      
+      <Dialog open={isInfoModalOpen} onOpenChange={setIsInfoModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{selectedItem?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p>{selectedItem?.description}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
+
