@@ -72,7 +72,10 @@ export default function Home() {
   const handleDragEnd = useCallback(() => {
     if (activeId === null) return;
 
-    setMovedItems(prev => new Set(prev).add(activeId));
+    if (!movedItems.has(activeId)) {
+        setShowDragHint(false);
+        setMovedItems(prev => new Set(prev).add(activeId));
+    }
 
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
@@ -81,14 +84,8 @@ export default function Home() {
       itemElement.style.cursor = 'grab';
     }
     setActiveId(null);
-  }, [activeId]);
+  }, [activeId, movedItems]);
   
-  useEffect(() => {
-    if (movedItems.size > 3) {
-      setShowDragHint(false);
-    }
-  }, [movedItems]);
-
   const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (activeId === null || !gridRef.current) return;
 
@@ -197,7 +194,7 @@ export default function Home() {
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
                {showDragHint && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
                   <p className="font-bold text-lg">Drag the images to map your predictions.</p>
                 </div>
               )}
