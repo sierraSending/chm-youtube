@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -81,23 +82,29 @@ export default function ThankYouPage() {
                     <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
             ) : (
-                <div className="relative w-full h-64 rounded-lg shadow-inner bg-muted/20">
-                    <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
-                    <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
-                    {predictions.map((pred, index) => {
-                        const pos = convertToPercent(pred);
-                        return (
-                            <div
-                                key={index}
-                                className="absolute w-2 h-2 bg-foreground rounded-full -translate-x-1/2 -translate-y-1/2"
-                                style={{
-                                    left: `${pos.x}%`,
-                                    top: `${pos.y}%`,
-                                    opacity: 0.5,
-                                }}
-                            />
-                        );
-                    })}
+                <div className="relative w-full h-64 text-foreground/80 font-bold uppercase text-xs tracking-wider flex flex-col p-6">
+                    <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
+                    <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
+                    <p className="absolute top-1/2 -left-3 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
+                    <p className="absolute top-1/2 -right-3 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
+                    <div className="relative w-full h-full rounded-lg shadow-inner bg-muted/20">
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
+                        <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
+                        {predictions.map((pred, index) => {
+                            const pos = convertToPercent(pred);
+                            return (
+                                <div
+                                    key={index}
+                                    className="absolute w-2 h-2 bg-foreground rounded-full -translate-x-1/2 -translate-y-1/2"
+                                    style={{
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        opacity: 0.5,
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
             )}
         </CardContent>
