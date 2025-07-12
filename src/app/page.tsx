@@ -2,10 +2,21 @@
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { savePredictions } from "@/app/actions";
+import { savePredictions, type SavePredictionsPayload } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type DraggableItem = {
   id: number;
@@ -31,6 +42,10 @@ export default function Home() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [joinCommunity, setJoinCommunity] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -95,15 +110,38 @@ export default function Home() {
     };
   }, [activeId, handleDragMove, handleDragEnd]);
   
-  const handleSubmit = async () => {
+  const validateEmail = (email: string) => {
+    if (!email) {
+      setEmailError("Email is required.");
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Please enter a valid email address.");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!validateEmail(email)) {
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
-      await savePredictions(items);
+      const payload: SavePredictionsPayload = {
+        items,
+        email,
+        joinCommunity
+      };
+      await savePredictions(payload);
       toast({
         title: "Success!",
         description: "Your predictions have been recorded.",
       });
+      setIsModalOpen(false);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -120,48 +158,98 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8 md:p-12 font-sans overflow-hidden">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
-        <p className="text-muted-foreground mt-2">Drag the blocks to map your predictions.</p>
-      </div>
-
-      <div className="w-full max-w-2xl flex flex-col items-center gap-8">
-        <div className="relative w-full text-foreground/80 font-bold uppercase text-sm tracking-wider">
-          <p className="absolute -top-6 left-1/2 -translate-x-1/2">Hope</p>
-          <p className="absolute -bottom-6 left-1/2 -translate-x-1/2">Fear</p>
-          <p className="absolute top-1/2 -left-8 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
-          <p className="absolute top-1/2 -right-8 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
-          
-          <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden">
-            <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
-            <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
-
-            {items.map(item => (
-              <div
-                key={item.id}
-                ref={el => itemRef.current.set(item.id, el)}
-                className={cn(
-                  "absolute w-10 h-10 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg border-2 border-white/50 cursor-grab transition-all duration-100 ease-in-out",
-                  item.color,
-                  { 'scale-110 shadow-2xl': activeId === item.id }
-                )}
-                style={{
-                  left: `${item.x}%`,
-                  top: `${item.y}%`,
-                  zIndex: activeId === item.id ? 100 : 10,
-                }}
-                onMouseDown={(e) => handleDragStart(item.id, e)}
-                onTouchStart={(e) => handleDragStart(item.id, e)}
-              />
-            ))}
-          </div>
+    <>
+      <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8 md:p-12 font-sans overflow-hidden">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
+          <p className="text-muted-foreground mt-2">Drag the blocks to map your predictions.</p>
         </div>
-        <Button onClick={handleSubmit} disabled={isSubmitting} size="lg" className="px-12 py-6 text-lg">
-          {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          {isSubmitting ? 'Submitting...' : 'Submit Predictions'}
-        </Button>
-      </div>
-    </main>
+
+        <div className="w-full max-w-2xl flex flex-col items-center gap-8">
+          <div className="relative w-full text-foreground/80 font-bold uppercase text-sm tracking-wider">
+            <p className="absolute -top-6 left-1/2 -translate-x-1/2">Hope</p>
+            <p className="absolute -bottom-6 left-1/2 -translate-x-1/2">Fear</p>
+            <p className="absolute top-1/2 -left-8 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
+            <p className="absolute top-1/2 -right-8 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
+            
+            <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden">
+              <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
+              <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
+
+              {items.map(item => (
+                <div
+                  key={item.id}
+                  ref={el => itemRef.current.set(item.id, el)}
+                  className={cn(
+                    "absolute w-10 h-10 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg border-2 border-white/50 cursor-grab transition-all duration-100 ease-in-out",
+                    item.color,
+                    { 'scale-110 shadow-2xl': activeId === item.id }
+                  )}
+                  style={{
+                    left: `${item.x}%`,
+                    top: `${item.y}%`,
+                    zIndex: activeId === item.id ? 100 : 10,
+                  }}
+                  onMouseDown={(e) => handleDragStart(item.id, e)}
+                  onTouchStart={(e) => handleDragStart(item.id, e)}
+                />
+              ))}
+            </div>
+          </div>
+          <Button onClick={() => setIsModalOpen(true)} size="lg" className="px-12 py-6 text-lg">
+            Submit Predictions
+          </Button>
+        </div>
+      </main>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Almost there!</DialogTitle>
+            <DialogDescription>
+              Please provide your email to save your forecast.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailError) validateEmail(e.target.value);
+                }}
+                className="col-span-3"
+                required
+              />
+            </div>
+             {emailError && <p className="col-span-4 text-sm text-destructive text-right">{emailError}</p>}
+            <div className="flex items-center space-x-2 justify-end col-span-4">
+              <Checkbox 
+                id="join" 
+                checked={joinCommunity}
+                onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
+              />
+              <label
+                htmlFor="join"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Join the community for updates
+              </label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={handleFinalSubmit} disabled={isSubmitting}>
+              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              {isSubmitting ? 'Saving...' : 'Save Forecast'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

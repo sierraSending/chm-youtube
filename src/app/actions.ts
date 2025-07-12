@@ -21,11 +21,20 @@ type Prediction = {
 };
 
 type Submission = {
+  email: string;
+  joinCommunity: boolean;
   createdAt: Timestamp;
   predictions: Record<string, Prediction>;
 };
 
-export async function savePredictions(items: DraggableItem[]) {
+export type SavePredictionsPayload = {
+    items: DraggableItem[];
+    email: string;
+    joinCommunity: boolean;
+}
+
+export async function savePredictions(payload: SavePredictionsPayload) {
+  const { items, email, joinCommunity } = payload;
   try {
     const predictions: Record<string, Prediction> = {};
     items.forEach((item) => {
@@ -44,6 +53,8 @@ export async function savePredictions(items: DraggableItem[]) {
     });
 
     const submissionData: Submission = {
+      email,
+      joinCommunity,
       predictions,
       createdAt: serverTimestamp() as Timestamp,
     };
