@@ -208,7 +208,8 @@ export default function Home() {
       const payload: SavePredictionsPayload = {
         items,
         email,
-        joinCommunity
+        joinCommunity,
+        averagePrediction: averagePosition
       };
       await savePredictions(payload);
       setIsSubmitModalOpen(false);

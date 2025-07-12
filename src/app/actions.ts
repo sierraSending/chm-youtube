@@ -28,16 +28,18 @@ type Submission = {
   joinCommunity: boolean;
   createdAt: Timestamp;
   predictions: Record<string, Prediction>;
+  averagePrediction: Prediction;
 };
 
 export type SavePredictionsPayload = {
     items: DraggableItem[];
     email: string;
     joinCommunity: boolean;
+    averagePrediction: { x: number; y: number };
 }
 
 export async function savePredictions(payload: SavePredictionsPayload) {
-  const { items, email, joinCommunity } = payload;
+  const { items, email, joinCommunity, averagePrediction } = payload;
   try {
     const predictions: Record<string, Prediction> = {};
     items.forEach((item) => {
@@ -52,10 +54,16 @@ export async function savePredictions(payload: SavePredictionsPayload) {
       predictions[item.name] = { x: x, y: cartesianY };
     });
 
+    const finalAveragePrediction = {
+        x: Math.round(averagePrediction.x - 50),
+        y: Math.round(averagePrediction.y - 50) * -1,
+    }
+
     const submissionData: Submission = {
       email,
       joinCommunity,
       predictions,
+      averagePrediction: finalAveragePrediction,
       createdAt: serverTimestamp() as Timestamp,
     };
 
