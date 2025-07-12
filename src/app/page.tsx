@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { savePredictions, type SavePredictionsPayload } from "@/app/actions";
@@ -51,8 +52,8 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const [movedItems, setMovedItems] = useState(new Set<number>());
   const [showDragHint, setShowDragHint] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -71,11 +72,8 @@ export default function Home() {
 
   const handleDragEnd = useCallback(() => {
     if (activeId === null) return;
-
-    if (!movedItems.has(activeId)) {
-        setShowDragHint(false);
-        setMovedItems(prev => new Set(prev).add(activeId));
-    }
+    
+    setShowDragHint(false);
 
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
@@ -84,7 +82,7 @@ export default function Home() {
       itemElement.style.cursor = 'grab';
     }
     setActiveId(null);
-  }, [activeId, movedItems]);
+  }, [activeId]);
   
   const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (activeId === null || !gridRef.current) return;
@@ -150,11 +148,8 @@ export default function Home() {
         joinCommunity
       };
       await savePredictions(payload);
-      toast({
-        title: "Success!",
-        description: "Your predictions have been recorded.",
-      });
       setIsModalOpen(false);
+      router.push('/thank-you');
     } catch (error) {
       toast({
         variant: "destructive",
