@@ -224,7 +224,7 @@ export default function Home() {
         <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
-            <p className="text-muted-foreground">double click on an item to learn more</p>
+            <p className="text-muted-foreground">double click an item for details</p>
           </div>
           <Button 
             onClick={handleSubmitClick} 
@@ -281,7 +281,7 @@ export default function Home() {
                   
                   {doubleClickHintId === item.id && (
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 p-2 rounded-lg shadow-2xl text-center transition-opacity duration-500 animate-in fade-in-0">
-                      <p className="font-semibold text-sm whitespace-nowrap">Double click to learn more!</p>
+                      <p className="font-semibold text-sm whitespace-nowrap">double click for details</p>
                     </div>
                   )}
 
