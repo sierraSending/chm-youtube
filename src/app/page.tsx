@@ -223,7 +223,7 @@ export default function Home() {
       <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
         <header className="flex items-start justify-between z-20">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
+            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
           </div>
           <Button 
             onClick={handleSubmitClick} 
@@ -236,7 +236,7 @@ export default function Home() {
           </Button>
         </header>
 
-        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative py-8 -mt-16">
+        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative pt-4 md:py-8">
           <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col">
             <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>

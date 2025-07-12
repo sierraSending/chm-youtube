@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Hope & Fear Forecast",
+  title: "Your AI Predictions",
   description: "Place your predictions on the Hope/Fear and Likely/Unlikely grid.",
 };
 
