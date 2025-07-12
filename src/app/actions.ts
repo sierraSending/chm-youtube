@@ -1,6 +1,6 @@
 "use server";
 
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 interface Prediction {
@@ -12,10 +12,24 @@ interface Prediction {
 
 export async function savePredictions(predictions: Prediction[]) {
     try {
-        await addDoc(collection(db, "predictions"), {
-            items: predictions,
-            createdAt: serverTimestamp(),
+        const batch = writeBatch(db);
+        const submissionRef = doc(collection(db, "submissions"));
+
+        batch.set(submissionRef, { createdAt: serverTimestamp() });
+
+        predictions.forEach(prediction => {
+            const predictionRef = doc(collection(db, "visitorPrediction"));
+            batch.set(predictionRef, {
+                submissionId: submissionRef.id,
+                color: prediction.color,
+                x: prediction.x,
+                y: prediction.y,
+                createdAt: serverTimestamp(),
+            });
         });
+
+        await batch.commit();
+        
     } catch (error) {
         console.error("Error writing document: ", error);
         throw new Error("Could not save predictions to Firebase.");
