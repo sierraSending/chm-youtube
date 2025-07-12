@@ -57,7 +57,10 @@ export default function Home() {
   const [joinCommunity, setJoinCommunity] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [showDragHint, setShowDragHint] = useState(true);
+  const [movedItems, setMovedItems] = useState<Set<number>>(new Set());
   const router = useRouter();
+
+  const allItemsMoved = movedItems.size === initialItems.length;
 
   useEffect(() => {
     setIsClient(true);
@@ -79,6 +82,8 @@ export default function Home() {
     if (activeId === null) return;
     
     setShowDragHint(false);
+    setMovedItems(prev => new Set(prev).add(activeId));
+
 
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
@@ -182,7 +187,13 @@ export default function Home() {
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
             <p className="text-muted-foreground">double click on an item to learn more</p>
           </div>
-          <Button onClick={() => setIsSubmitModalOpen(true)} size="lg">
+          <Button 
+            onClick={() => setIsSubmitModalOpen(true)} 
+            size="lg"
+            className={cn({
+              'animate-pulse-glow': allItemsMoved,
+            })}
+          >
             Submit Predictions
           </Button>
         </header>
