@@ -164,22 +164,23 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8 md:p-12 font-sans overflow-hidden">
-        <div className="text-center mb-4">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
-          <p className="text-muted-foreground mt-2">Drag the images to map your predictions.</p>
-        </div>
+      <main className="flex h-screen w-full flex-col p-4 sm:p-6 md:p-8 font-sans overflow-hidden">
+        <header className="flex items-start justify-between mb-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
+            <p className="text-muted-foreground mt-1 text-sm">Drag the images to map your predictions.</p>
+          </div>
+          <Button onClick={() => setIsModalOpen(true)} size="lg">
+            Submit Predictions
+          </Button>
+        </header>
 
-        <Button onClick={() => setIsModalOpen(true)} size="lg" className="px-12 py-6 text-lg mb-8">
-          Submit Predictions
-        </Button>
-
-        <div className="w-full max-w-4xl flex flex-col items-center gap-8">
-          <div className="relative w-full text-foreground/80 font-bold uppercase text-sm tracking-wider">
+        <div className="flex-1 flex items-center justify-center w-full h-full">
+          <div className="relative w-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider">
             <p className="absolute -top-6 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-6 left-1/2 -translate-x-1/2">Fear</p>
-            <p className="absolute top-1/2 -left-8 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
-            <p className="absolute top-1/2 -right-8 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
+            <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
+            <p className="absolute top-1/2 -right-8 md:-right-12 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
             
             <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden">
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
