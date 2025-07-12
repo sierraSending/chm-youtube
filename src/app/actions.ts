@@ -66,22 +66,20 @@ export async function savePredictions(payload: SavePredictionsPayload) {
   }
 }
 
-export async function incrementVisitorCount() {
+export async function incrementCounter(fieldName: 'pageLoad' | 'itemMove' | 'itemDetailsClick' | 'submitButtonClick' | 'thankYouCTAclick') {
   const counterRef = doc(db, 'visitorCount', 'counter');
   try {
     await runTransaction(db, async (transaction) => {
       const counterDoc = await transaction.get(counterRef);
       if (!counterDoc.exists()) {
-        // If the document doesn't exist, create it with a count of 1.
-        transaction.set(counterRef, { pageLoad: 1 });
+        transaction.set(counterRef, { [fieldName]: 1 });
         return;
       }
-      const newCount = (counterDoc.data().pageLoad || 0) + 1;
-      transaction.update(counterRef, { pageLoad: newCount });
+      const newCount = (counterDoc.data()[fieldName] || 0) + 1;
+      transaction.update(counterRef, { [fieldName]: newCount });
     });
   } catch (error) {
-    console.error("Error incrementing visitor count: ", error);
-    // We don't throw an error here because this is a non-critical background task.
-    // The user doesn't need to know if it fails.
+    console.error(`Error incrementing ${fieldName}: `, error);
+    // Non-critical background task, so we don't throw to the user.
   }
 }

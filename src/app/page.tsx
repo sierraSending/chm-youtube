@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEv
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { savePredictions, type SavePredictionsPayload, incrementVisitorCount } from "@/app/actions";
+import { savePredictions, type SavePredictionsPayload, incrementCounter } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -64,7 +64,7 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    incrementVisitorCount();
+    incrementCounter('pageLoad');
   }, []);
 
   const handleDragStart = useCallback((id: number, e: MouseEvent<HTMLDivElement> | ReactTouchEvent<HTMLDivElement>) => {
@@ -86,8 +86,11 @@ export default function Home() {
     if (activeId === null) return;
     
     setShowDragHint(false);
+    
+    if (!movedItems.has(activeId)) {
+      incrementCounter('itemMove');
+    }
     setMovedItems(prev => new Set(prev).add(activeId));
-
 
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
@@ -99,7 +102,7 @@ export default function Home() {
       }
     }
     setActiveId(null);
-  }, [activeId]);
+  }, [activeId, movedItems]);
   
   const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (activeId === null || !gridRef.current) return;
@@ -122,6 +125,7 @@ export default function Home() {
   }, [activeId]);
 
   const handleDoubleClick = (item: DraggableItem) => {
+    incrementCounter('itemDetailsClick');
     setSelectedItem(item);
     setIsInfoModalOpen(true);
   };
@@ -154,6 +158,11 @@ export default function Home() {
     setEmailError("");
     return true;
   };
+  
+  const handleSubmitClick = () => {
+    incrementCounter('submitButtonClick');
+    setIsSubmitModalOpen(true);
+  }
 
   const handleFinalSubmit = async () => {
     if (!validateEmail(email)) {
@@ -189,13 +198,13 @@ export default function Home() {
   return (
     <>
       <main className="flex h-screen w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
-        <header className="flex items-start justify-between mb-4 z-20">
+        <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
             <p className="text-muted-foreground">double click on an item to learn more</p>
           </div>
           <Button 
-            onClick={() => setIsSubmitModalOpen(true)} 
+            onClick={handleSubmitClick} 
             size="lg"
             className={cn({
               'animate-pulse-glow': allItemsMoved,
@@ -205,8 +214,8 @@ export default function Home() {
           </Button>
         </header>
 
-        <div className="flex-1 flex items-center justify-center w-full h-full relative">
-          <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col">
+        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative -mt-16">
+          <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col py-8">
             <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
             <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
