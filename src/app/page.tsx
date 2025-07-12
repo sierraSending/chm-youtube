@@ -220,7 +220,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-screen w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
         <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
@@ -353,4 +353,3 @@ export default function Home() {
     </>
   );
 }
-
