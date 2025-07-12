@@ -243,7 +243,7 @@ export default function Home() {
             <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
             <p className="absolute top-1/2 -right-8 md:-right-12 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
             
-            <div ref={gridRef} className="relative w-full h-full bg-background/20 rounded-lg shadow-inner overflow-hidden z-10">
+            <div ref={gridRef} className="relative w-full h-full rounded-lg shadow-inner overflow-hidden z-10">
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
@@ -276,7 +276,7 @@ export default function Home() {
                   >
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
                   </div>
-                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md bg-background px-2 py-1 rounded-md">{item.name}</p>
+                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md bg-[#8B0000] px-2 py-1 rounded-md">{item.name}</p>
                   
                   {doubleClickHintId === item.id && (
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 p-2 rounded-lg shadow-2xl text-center transition-opacity duration-500 animate-in fade-in-0">
