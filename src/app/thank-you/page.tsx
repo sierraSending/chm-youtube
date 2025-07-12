@@ -15,21 +15,15 @@ export default function ThankYouPage() {
             Your forecast has been successfully submitted.
           </CardTitle>
           <CardDescription>
-            Thank You!
+            Thank you! We appreciate you taking the time to share your perspective.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <p>
-            We appreciate you taking the time to share your perspective.
-          </p>
           <Button asChild>
             <Link href="https://www.computerhistory.org/collections/catalog" target="_blank" rel="noopener noreferrer">
-              Explore the Computer History Museum's collection
+              Explore the CHM collection
             </Link>
           </Button>
-          <p className="text-left text-xs text-foreground px-4">
-            Journey through the Computer History Museum's vast collection of archival materials, objects, and oral histories and learn about the visionaries, innovations, and untold stories that revolutionized our digital world.
-          </p>
         </CardContent>
       </Card>
     </main>
