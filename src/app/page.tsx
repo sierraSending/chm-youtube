@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { savePredictions } from "@/app/actions";
+import { saveTestTimestamp } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -97,23 +97,18 @@ export default function Home() {
   
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    const predictions = items.map(item => {
-      const x_norm = (item.x / 100) * 2 - 1;
-      const y_norm = -((item.y / 100) * 2 - 1);
-      return { id: item.id, color: item.color.replace('bg-',''), x: x_norm, y: y_norm };
-    });
-
+    
     try {
-      await savePredictions(predictions);
+      await saveTestTimestamp();
       toast({
         title: "Success!",
-        description: "Your predictions have been recorded.",
+        description: "Your test submission has been recorded.",
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem submitting your predictions.",
+        description: "There was a problem submitting your test data.",
       });
     } finally {
       setIsSubmitting(false);
