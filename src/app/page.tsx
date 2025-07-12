@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { savePredictions, type SavePredictionsPayload, incrementCounter } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
@@ -39,7 +40,7 @@ const initialItems: DraggableItem[] = [
   { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50, description: "In the 'Iron Man' films, J.A.R.V.I.S. (Just A Rather Very Intelligent System) is Tony Stark's AI assistant, helping him design and control his suits. J.A.R.V.I.S. represents the dream of a helpful, witty AI companion and has inspired real-world entrepreneurs like Mark Zuckerberg." },
   { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50, description: "In the 2013 film 'Her,' a lonely writer develops a relationship with Samantha, an advanced AI operating system. The film explores themes of love, connection, and what it means to be human in an increasingly digital world, inspired by early web-based chatbots like A.L.I.C.E." },
   { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
-  { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "The sentient computer HAL 9000 is the star of Stanley Kubrick's 1968 film '2001: A Space Odyssey.' HAL controls the systems of a spaceship and can communicate with the human crew. As the film progresses, HAL's calm, conversational voice becomes a source of terror, famously saying, 'I'm sorry, Dave. I'm afraid I can't do that.'" },
+  { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "The sentient computer HAL 9000 is the star of Stanley Kubrick's 1968 film '2001: A Space Odyssey.' HAL controls the systems of a spaceship and can communicate with the human crew. As the film progresses, HAL's calm, conversational voice becomes a source of terror, famously saying, 'I'm sorry, Dave. I'm afraid I've an issue.'" },
 ];
 
 export default function Home() {
@@ -55,7 +56,9 @@ export default function Home() {
   const [selectedItem, setSelectedItem] = useState<DraggableItem | null>(null);
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const [termsError, setTermsError] = useState("");
   const [movedItems, setMovedItems] = useState<Set<number>>(new Set());
   const [doubleClickHintId, setDoubleClickHintId] = useState<number | null>(null);
   const hintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -92,7 +95,6 @@ export default function Home() {
     if (itemElement) {
       itemElement.style.zIndex = '100';
     }
-    // Set cursor on the circular element
     const circularElement = itemElement?.querySelector('[data-drag-handle]');
     if (circularElement) {
         (circularElement as HTMLElement).style.cursor = 'grabbing';
@@ -195,7 +197,15 @@ export default function Home() {
   }
 
   const handleFinalSubmit = async () => {
-    if (!validateEmail(email)) {
+    const isEmailValid = validateEmail(email);
+    const isTermsValid = agreedToTerms;
+    if (!isTermsValid) {
+      setTermsError("You must agree to the terms and privacy policy.");
+    } else {
+      setTermsError("");
+    }
+
+    if (!isEmailValid || !isTermsValid) {
       return;
     }
     
@@ -232,8 +242,8 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#d9534f_100%)]">
-        <header className="flex items-start justify-between z-20">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#d9534f_100%)]">
+        <header className="flex items-start justify-between z-20 p-4 sm:p-6 md:p-8">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
           </div>
@@ -248,7 +258,7 @@ export default function Home() {
           </Button>
         </header>
 
-        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative pt-4 md:py-8">
+        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative p-4 sm:p-6 md:p-8 pt-0 md:pt-0">
           <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col">
             <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
@@ -313,17 +323,15 @@ export default function Home() {
 
       <Dialog open={isSubmitModalOpen} onOpenChange={setIsSubmitModalOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+          <DialogHeader className="text-left">
             <DialogTitle>Almost there!</DialogTitle>
             <DialogDescription>
               Please provide your email to save your forecast.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
-                Email
-              </Label>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -332,29 +340,54 @@ export default function Home() {
                   setEmail(e.target.value);
                   if (emailError) validateEmail(e.target.value);
                 }}
-                className="col-span-3"
                 required
               />
+              {emailError && <p className="text-sm text-destructive">{emailError}</p>}
             </div>
-             {emailError && <p className="col-span-4 text-sm text-destructive text-right">{emailError}</p>}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <div className="col-start-2 col-span-3 flex items-center space-x-2">
-                <Checkbox 
-                  id="join" 
-                  checked={joinCommunity}
-                  onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
-                />
+            
+            <div className="flex items-start space-x-2">
+              <Checkbox 
+                id="terms" 
+                checked={agreedToTerms}
+                onCheckedChange={(checked) => {
+                  setAgreedToTerms(Boolean(checked));
+                  if (termsError) setTermsError("");
+                }}
+              />
+              <div className="grid gap-1.5 leading-none">
                 <label
-                  htmlFor="join"
+                  htmlFor="terms"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Join the community for updates
+                  I agree to the{" "}
+                  <Link href="https://computerhistory.org/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                    terms and conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="https://computerhistory.org/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                    privacy policy
+                  </Link>.
                 </label>
+                {termsError && <p className="text-sm text-destructive">{termsError}</p>}
               </div>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="join" 
+                checked={joinCommunity}
+                onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
+              />
+              <label
+                htmlFor="join"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Join the community for updates
+              </label>
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleFinalSubmit} disabled={isSubmitting}>
+            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full">
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               {isSubmitting ? 'Saving...' : 'Save Forecast'}
             </Button>
@@ -375,5 +408,3 @@ export default function Home() {
     </>
   );
 }
-
-    
