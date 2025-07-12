@@ -58,6 +58,8 @@ export default function Home() {
   const [emailError, setEmailError] = useState("");
   const [showDragHint, setShowDragHint] = useState(true);
   const [movedItems, setMovedItems] = useState<Set<number>>(new Set());
+  const [doubleClickHintId, setDoubleClickHintId] = useState<number | null>(null);
+  const hintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   const allItemsMoved = movedItems.size === initialItems.length;
@@ -65,6 +67,12 @@ export default function Home() {
   useEffect(() => {
     setIsClient(true);
     incrementCounter('pageLoad');
+    
+    return () => {
+      if (hintTimeoutRef.current) {
+        clearTimeout(hintTimeoutRef.current);
+      }
+    };
   }, []);
 
   const handleDragStart = useCallback((id: number, e: MouseEvent<HTMLDivElement> | ReactTouchEvent<HTMLDivElement>) => {
@@ -86,6 +94,13 @@ export default function Home() {
     if (activeId === null) return;
     
     setShowDragHint(false);
+
+    if (movedItems.size === 0) {
+      setDoubleClickHintId(activeId);
+      hintTimeoutRef.current = setTimeout(() => {
+        setDoubleClickHintId(null);
+      }, 5000);
+    }
     
     if (!movedItems.has(activeId)) {
       incrementCounter('itemMove');
@@ -132,6 +147,10 @@ export default function Home() {
     incrementCounter('itemDetailsClick');
     setSelectedItem(item);
     setIsInfoModalOpen(true);
+    if (doubleClickHintId === item.id) {
+       if (hintTimeoutRef.current) clearTimeout(hintTimeoutRef.current);
+       setDoubleClickHintId(null);
+    }
   };
 
   useEffect(() => {
@@ -259,6 +278,13 @@ export default function Home() {
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
                   </div>
                   <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md">{item.name}</p>
+                  
+                  {doubleClickHintId === item.id && (
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 p-2 rounded-lg shadow-2xl text-center transition-opacity duration-500 animate-in fade-in-0">
+                      <p className="font-semibold text-sm whitespace-nowrap">Double click to learn more!</p>
+                    </div>
+                  )}
+
                 </div>
               ))}
             </div>
