@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { savePredictions, type SavePredictionsPayload } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
@@ -20,18 +21,22 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 type DraggableItem = {
   id: number;
-  color: string;
+  name: string;
+  image: string; // path to image
   x: number; // percentage
   y: number; // percentage
 };
 
 const initialItems: DraggableItem[] = [
-  { id: 1, color: "bg-blue-500", x: 50, y: 50 },
-  { id: 2, color: "bg-green-500", x: 50, y: 50 },
-  { id: 3, color: "bg-yellow-400", x: 50, y: 50 },
-  { id: 4, color: "bg-purple-500", x: 50, y: 50 },
-  { id: 5, color: "bg-pink-500", x: 50, y: 50 },
-  { id: 6, color: "bg-cyan-400", x: 50, y: 50 },
+  { id: 1, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50 },
+  { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50 },
+  { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50 },
+  { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50 },
+  { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50 },
+  { id: 6, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50 },
+  { id: 7, name: "PINNOCCHIO", image: "/images/PINNOCCHIO.png", x: 50, y: 50 },
+  { id: 8, name: "RUR", image: "/images/RUR.png", x: 50, y: 50 },
+  { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50 },
 ];
 
 export default function Home() {
@@ -162,7 +167,7 @@ export default function Home() {
       <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8 md:p-12 font-sans overflow-hidden">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
-          <p className="text-muted-foreground mt-2">Drag the blocks to map your predictions.</p>
+          <p className="text-muted-foreground mt-2">Drag the images to map your predictions.</p>
         </div>
 
         <div className="w-full max-w-2xl flex flex-col items-center gap-8">
@@ -181,8 +186,7 @@ export default function Home() {
                   key={item.id}
                   ref={el => itemRef.current.set(item.id, el)}
                   className={cn(
-                    "absolute w-10 h-10 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg border-2 border-white/50 cursor-grab transition-all duration-100 ease-in-out",
-                    item.color,
+                    "absolute w-16 h-16 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg cursor-grab transition-all duration-100 ease-in-out bg-white/10 border-2 border-white/50",
                     { 'scale-110 shadow-2xl': activeId === item.id }
                   )}
                   style={{
@@ -192,7 +196,9 @@ export default function Home() {
                   }}
                   onMouseDown={(e) => handleDragStart(item.id, e)}
                   onTouchStart={(e) => handleDragStart(item.id, e)}
-                />
+                >
+                  <Image src={item.image} alt={item.name} width={48} height={48} className="object-contain pointer-events-none" />
+                </div>
               ))}
             </div>
           </div>

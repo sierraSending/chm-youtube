@@ -10,7 +10,8 @@ import {db} from '@/lib/firebase';
 
 type DraggableItem = {
   id: number;
-  color: string;
+  name: string;
+  image: string;
   x: number;
   y: number;
 };
@@ -38,18 +39,15 @@ export async function savePredictions(payload: SavePredictionsPayload) {
   try {
     const predictions: Record<string, Prediction> = {};
     items.forEach((item) => {
-      const colorName = item.color.split('-')[1];
-      if (colorName) {
-        // Convert from 0-100 scale to -50 to +50 scale and round to integer
-        const x = Math.round(item.x - 50);
-        const y = Math.round(item.y - 50);
-        
-        // The y-axis in browser coordinates is inverted (0 is top, 100 is bottom).
-        // To match a standard Cartesian grid (positive Y is up), we invert it.
-        const cartesianY = y * -1;
+      // Convert from 0-100 scale to -50 to +50 scale and round to integer
+      const x = Math.round(item.x - 50);
+      const y = Math.round(item.y - 50);
+      
+      // The y-axis in browser coordinates is inverted (0 is top, 100 is bottom).
+      // To match a standard Cartesian grid (positive Y is up), we invert it.
+      const cartesianY = y * -1;
 
-        predictions[colorName] = { x: x, y: cartesianY };
-      }
+      predictions[item.name] = { x: x, y: cartesianY };
     });
 
     const submissionData: Submission = {
