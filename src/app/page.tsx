@@ -317,18 +317,20 @@ export default function Home() {
               />
             </div>
              {emailError && <p className="col-span-4 text-sm text-destructive text-right">{emailError}</p>}
-            <div className="flex items-center space-x-2 justify-end col-span-4">
-              <Checkbox 
-                id="join" 
-                checked={joinCommunity}
-                onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
-              />
-              <label
-                htmlFor="join"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Join the community for updates
-              </label>
+            <div className="col-span-4 flex justify-end">
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="join" 
+                  checked={joinCommunity}
+                  onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
+                />
+                <label
+                  htmlFor="join"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Join the community for updates
+                </label>
+              </div>
             </div>
           </div>
           <DialogFooter>
