@@ -165,7 +165,7 @@ export default function Home() {
   return (
     <>
       <main className="flex h-screen w-full flex-col p-4 sm:p-6 md:p-8 font-sans overflow-hidden">
-        <header className="flex items-start justify-between mb-4">
+        <header className="flex items-start justify-between mb-4 z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
             <p className="text-muted-foreground mt-1 text-sm">Drag the images to map your predictions.</p>
@@ -182,7 +182,7 @@ export default function Home() {
             <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
             <p className="absolute top-1/2 -right-8 md:-right-12 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
             
-            <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden">
+            <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden z-10">
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
