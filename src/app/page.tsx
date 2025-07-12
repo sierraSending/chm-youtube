@@ -165,10 +165,14 @@ export default function Home() {
   return (
     <>
       <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8 md:p-12 font-sans overflow-hidden">
-        <div className="text-center mb-8">
+        <div className="text-center mb-4">
           <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
           <p className="text-muted-foreground mt-2">Drag the images to map your predictions.</p>
         </div>
+
+        <Button onClick={() => setIsModalOpen(true)} size="lg" className="px-12 py-6 text-lg mb-8">
+          Submit Predictions
+        </Button>
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-8">
           <div className="relative w-full text-foreground/80 font-bold uppercase text-sm tracking-wider">
@@ -205,9 +209,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <Button onClick={() => setIsModalOpen(true)} size="lg" className="px-12 py-6 text-lg">
-            Submit Predictions
-          </Button>
         </div>
       </main>
 
