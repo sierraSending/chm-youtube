@@ -220,7 +220,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#a52a2a_100%)]">
         <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
