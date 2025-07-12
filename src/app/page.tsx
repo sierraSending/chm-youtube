@@ -186,8 +186,8 @@ export default function Home() {
                   key={item.id}
                   ref={el => itemRef.current.set(item.id, el)}
                   className={cn(
-                    "absolute w-32 h-32 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg cursor-grab transition-all duration-100 ease-in-out bg-white/10 border-2 border-white/50",
-                    { 'scale-110 shadow-2xl': activeId === item.id }
+                    "absolute w-32 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-grab transition-all duration-100 ease-in-out",
+                    { 'scale-110 shadow-2xl z-50': activeId === item.id }
                   )}
                   style={{
                     left: `${item.x}%`,
@@ -197,7 +197,10 @@ export default function Home() {
                   onMouseDown={(e) => handleDragStart(item.id, e)}
                   onTouchStart={(e) => handleDragStart(item.id, e)}
                 >
-                  <Image src={item.image} alt={item.name} width={96} height={96} className="object-contain pointer-events-none" />
+                   <div className="w-24 h-24 rounded-full bg-white/10 border-2 border-white/50 flex items-center justify-center shadow-lg">
+                    <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
+                  </div>
+                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md">{item.name}</p>
                 </div>
               ))}
             </div>
