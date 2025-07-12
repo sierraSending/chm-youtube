@@ -8,8 +8,8 @@ export default function ThankYouPage() {
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <CheckCircle className="h-10 w-10 text-green-600" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
+            <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
           </div>
           <CardTitle className="mt-4 text-2xl font-bold">Thank You!</CardTitle>
           <CardDescription>
@@ -21,8 +21,13 @@ export default function ThankYouPage() {
             We appreciate you taking the time to share your perspective.
           </p>
           <Button asChild>
-            <Link href="/">Submit another forecast</Link>
+            <Link href="https://www.computerhistory.org/collections/catalog" target="_blank" rel="noopener noreferrer">
+              Explore the Computer History Museum's collection
+            </Link>
           </Button>
+          <p className="text-xs text-muted-foreground px-4">
+            Journey through the Computer History Museum's vast collection of archival materials, objects, and oral histories and learn about the visionaries, innovations, and untold stories that revolutionized our digital world.
+          </p>
         </CardContent>
       </Card>
     </main>
