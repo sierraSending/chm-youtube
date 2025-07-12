@@ -276,7 +276,7 @@ export default function Home() {
                   >
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
                   </div>
-                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md">{item.name}</p>
+                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md bg-black/60 px-2 py-1 rounded-md">{item.name}</p>
                   
                   {doubleClickHintId === item.id && (
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 p-2 rounded-lg shadow-2xl text-center transition-opacity duration-500 animate-in fade-in-0">
