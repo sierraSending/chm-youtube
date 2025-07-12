@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   runTransaction,
   serverTimestamp,
   type Timestamp,
@@ -89,5 +90,22 @@ export async function incrementCounter(fieldName: 'pageLoad' | 'itemMove' | 'ite
   } catch (error) {
     console.error(`Error incrementing ${fieldName}: `, error);
     // Non-critical background task, so we don't throw to the user.
+  }
+}
+
+export async function getAveragePredictions(): Promise<Prediction[]> {
+  try {
+    const querySnapshot = await getDocs(collection(db, "visitorPrediction"));
+    const predictions: Prediction[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.averagePrediction) {
+        predictions.push(data.averagePrediction as Prediction);
+      }
+    });
+    return predictions;
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    throw new Error("Could not fetch average predictions.");
   }
 }

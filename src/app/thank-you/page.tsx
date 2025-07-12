@@ -1,19 +1,49 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle } from 'lucide-react';
-import { incrementCounter } from '@/app/actions';
+import { CheckCircle, Loader2 } from 'lucide-react';
+import { incrementCounter, getAveragePredictions } from '@/app/actions';
+
+type Prediction = {
+  x: number; // -50 to 50
+  y: number; // -50 to 50
+};
 
 export default function ThankYouPage() {
-  
+  const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPredictions() {
+      try {
+        const preds = await getAveragePredictions();
+        setPredictions(preds);
+      } catch (error) {
+        console.error("Failed to fetch predictions:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchPredictions();
+  }, []);
+
   const handleCTAClick = () => {
     incrementCounter('thankYouCTAclick');
   };
+  
+  // Convert from -50 to +50 to 0-100 percentage for CSS positioning
+  const convertToPercent = (p: Prediction) => {
+      const x = p.x + 50;
+      const y = (p.y * -1) + 50; // Invert Y axis back for browser coordinates
+      return { x, y };
+  };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4">
+    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 gap-8">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
@@ -37,6 +67,39 @@ export default function ThankYouPage() {
               Explore the CHM collection
             </Link>
           </Button>
+        </CardContent>
+      </Card>
+
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold text-center">How your forecast compares</CardTitle>
+          <CardDescription className="text-center">This chart shows the average forecast from all previous visitors.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            {isLoading ? (
+                <div className="flex justify-center items-center h-64">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : (
+                <div className="relative w-full h-64 rounded-lg shadow-inner bg-muted/20">
+                    <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
+                    <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
+                    {predictions.map((pred, index) => {
+                        const pos = convertToPercent(pred);
+                        return (
+                            <div
+                                key={index}
+                                className="absolute w-2 h-2 bg-foreground rounded-full -translate-x-1/2 -translate-y-1/2"
+                                style={{
+                                    left: `${pos.x}%`,
+                                    top: `${pos.y}%`,
+                                    opacity: 0.5,
+                                }}
+                            />
+                        );
+                    })}
+                </div>
+            )}
         </CardContent>
       </Card>
     </main>
