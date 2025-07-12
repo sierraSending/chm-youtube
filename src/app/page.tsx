@@ -278,7 +278,7 @@ export default function Home() {
                   key={item.id}
                   ref={el => itemRef.current.set(item.id, el)}
                   className={cn(
-                    "absolute w-32 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center transition-all duration-100 ease-in-out",
+                    "absolute w-32 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center transition-all duration-100 ease-in-out select-none",
                     { 'scale-110 shadow-2xl z-50': activeId === item.id }
                   )}
                   style={{
@@ -375,3 +375,5 @@ export default function Home() {
     </>
   );
 }
+
+    
