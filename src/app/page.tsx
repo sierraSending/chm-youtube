@@ -90,7 +90,7 @@ export default function Home() {
     if (!movedItems.has(activeId)) {
       incrementCounter('itemMove');
     }
-    setMovedItems(prev => new Set(prev).add(activeId));
+    setMovedItems(prev => new Set(prev).add(activeId!));
 
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
@@ -106,6 +106,10 @@ export default function Home() {
   
   const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (activeId === null || !gridRef.current) return;
+
+    if ('touches' in e) {
+        e.preventDefault();
+    }
 
     const gridRect = gridRef.current.getBoundingClientRect();
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
@@ -133,7 +137,7 @@ export default function Home() {
   useEffect(() => {
     if(activeId !== null) {
       window.addEventListener("mousemove", handleDragMove);
-      window.addEventListener("touchmove", handleDragMove);
+      window.addEventListener("touchmove", handleDragMove, { passive: false });
       window.addEventListener("mouseup", handleDragEnd);
       window.addEventListener("touchend", handleDragEnd);
     }
@@ -214,8 +218,8 @@ export default function Home() {
           </Button>
         </header>
 
-        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative -mt-16">
-          <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col py-8">
+        <div className="flex-1 flex flex-col items-center justify-center w-full h-full relative py-8 -mt-16">
+          <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col">
             <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
             <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
@@ -225,7 +229,7 @@ export default function Home() {
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
-               {showDragHint && (
+               {showDragHint && movedItems.size < 1 && (
                 <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
                   <p className="font-bold text-lg">Drag the images to map your predictions.</p>
                 </div>
@@ -324,3 +328,5 @@ export default function Home() {
     </>
   );
 }
+
+    
