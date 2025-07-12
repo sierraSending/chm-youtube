@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEv
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { savePredictions, type SavePredictionsPayload } from "@/app/actions";
+import { savePredictions, type SavePredictionsPayload, incrementVisitorCount } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -61,6 +61,7 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
+    incrementVisitorCount();
   }, []);
 
   const handleDragStart = useCallback((id: number, e: MouseEvent<HTMLDivElement> | ReactTouchEvent<HTMLDivElement>) => {

@@ -3,6 +3,8 @@
 import {
   addDoc,
   collection,
+  doc,
+  runTransaction,
   serverTimestamp,
   type Timestamp,
 } from 'firebase/firestore';
@@ -61,5 +63,25 @@ export async function savePredictions(payload: SavePredictionsPayload) {
   } catch (error) {
     console.error('Error writing document to "visitorPrediction": ', error);
     throw new Error('Could not save predictions to Firebase.');
+  }
+}
+
+export async function incrementVisitorCount() {
+  const counterRef = doc(db, 'visitorCount', 'counter');
+  try {
+    await runTransaction(db, async (transaction) => {
+      const counterDoc = await transaction.get(counterRef);
+      if (!counterDoc.exists()) {
+        // If the document doesn't exist, create it with a count of 1.
+        transaction.set(counterRef, { pageLoad: 1 });
+        return;
+      }
+      const newCount = (counterDoc.data().pageLoad || 0) + 1;
+      transaction.update(counterRef, { pageLoad: newCount });
+    });
+  } catch (error) {
+    console.error("Error incrementing visitor count: ", error);
+    // We don't throw an error here because this is a non-critical background task.
+    // The user doesn't need to know if it fails.
   }
 }
