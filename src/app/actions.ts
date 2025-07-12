@@ -12,15 +12,19 @@ interface Prediction {
 
 export async function savePredictions(predictions: Prediction[]) {
     try {
+        // First, create the submission document to get its ID
+        const submissionRef = await addDoc(collection(db, "submissions"), {
+            createdAt: serverTimestamp(),
+        });
+        const submissionId = submissionRef.id;
+
+        // Then, create a batch to write all the prediction documents
         const batch = writeBatch(db);
-        const submissionRef = doc(collection(db, "submissions"));
-
-        batch.set(submissionRef, { createdAt: serverTimestamp() });
-
+        
         predictions.forEach(prediction => {
             const predictionRef = doc(collection(db, "visitorPrediction"));
             batch.set(predictionRef, {
-                submissionId: submissionRef.id,
+                submissionId: submissionId,
                 color: prediction.color,
                 x: prediction.x,
                 y: prediction.y,
