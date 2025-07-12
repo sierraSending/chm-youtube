@@ -33,12 +33,12 @@ type DraggableItem = {
 const initialItems: DraggableItem[] = [
   { id: 1, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50, description: "Introduced in 1952, Astro Boy, known in Japan as Mighty Atom (鉄腕アトム), is one of the most successful manga and anime characters. Created by a man who had lost his son, Astro Boy is a human-like robot boy that can think, talk, and experience emotions." },
   { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50, description: "The golem is a protective figure from Jewish folklore. Over the centuries, this human-like creature has taken different forms and meanings. Fashioned from mud or clay, the golem can't speak but is animated by special Hebrew words written on paper and placed in or on it. Popular games like Minecraft and Pokémon include characters inspired by the golem." },
-  { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
   { id: 7, name: "PINOCCHIO", image: "/images/PINOCCHIO.png", x: 50, y: 50, description: "Carlo Collodi published his children's novel Pinocchio in 1883. A toymaker's wish is granted for his wooden puppet to become a real boy. Pinocchio gains the power of speech but, like today's chatbots, has trouble with truthfulness." },
   { id: 8, name: "RUR", image: "/images/RUR.png", x: 50, y: 50, description: "Czech playwright Karel Čapek's 1920 play R.U.R.—Rossum's Universal Robots—became an instant international sensation and introduced the word \"robot.\" The play imagines chemically manufactured factory workers called \"roboti\" (from the Czech for \"forced labor\"). When they revolt against humanity, their makers wish they'd made them speak different languages so that they might have been turned against one another." },
   { id: 6, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50, description: "The 'Maschinenmensch' (Machine-Human) from Fritz Lang’s 1927 silent film 'Metropolis' is one of cinema's earliest and most iconic robots. Taking the form of a human woman, this robot explores the fear of AI inciting chaos and replacing humanity, a theme still relevant today." },
   { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50, description: "In the 'Iron Man' films, J.A.R.V.I.S. (Just A Rather Very Intelligent System) is Tony Stark's AI assistant, helping him design and control his suits. J.A.R.V.I.S. represents the dream of a helpful, witty AI companion and has inspired real-world entrepreneurs like Mark Zuckerberg." },
   { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50, description: "In the 2013 film 'Her,' a lonely writer develops a relationship with Samantha, an advanced AI operating system. The film explores themes of love, connection, and what it means to be human in an increasingly digital world, inspired by early web-based chatbots like A.L.I.C.E." },
+  { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
   { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "The sentient computer HAL 9000 is the star of Stanley Kubrick's 1968 film '2001: A Space Odyssey.' HAL controls the systems of a spaceship and can communicate with the human crew. As the film progresses, HAL's calm, conversational voice becomes a source of terror, famously saying, 'I'm sorry, Dave. I'm afraid I can't do that.'" },
 ];
 
@@ -209,8 +209,12 @@ export default function Home() {
         averagePrediction: averagePosition
       };
       await savePredictions(payload);
+
+      const avgX = Math.round(averagePosition.x - 50);
+      const avgY = Math.round(averagePosition.y - 50) * -1;
+
       setIsSubmitModalOpen(false);
-      router.push('/thank-you');
+      router.push(`/thank-you?avgX=${avgX}&avgY=${avgY}`);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -333,8 +337,8 @@ export default function Home() {
               />
             </div>
              {emailError && <p className="col-span-4 text-sm text-destructive text-right">{emailError}</p>}
-            <div className="col-span-4 flex justify-end">
-              <div className="flex items-center space-x-2">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <div className="col-start-2 col-span-3 flex items-center space-x-2">
                 <Checkbox 
                   id="join" 
                   checked={joinCommunity}

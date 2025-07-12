@@ -1,8 +1,9 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Loader2 } from 'lucide-react';
@@ -13,9 +14,23 @@ type Prediction = {
   y: number; // -50 to 50
 };
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const searchParams = useSearchParams();
+
+  const userAveragePrediction = useMemo(() => {
+    const avgX = searchParams.get('avgX');
+    const avgY = searchParams.get('avgY');
+    if (avgX !== null && avgY !== null) {
+      const x = parseInt(avgX, 10);
+      const y = parseInt(avgY, 10);
+      if (!isNaN(x) && !isNaN(y)) {
+        return { x, y };
+      }
+    }
+    return null;
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchPredictions() {
@@ -42,6 +57,8 @@ export default function ThankYouPage() {
       const y = (p.y * -1) + 50; // Invert Y axis back for browser coordinates
       return { x, y };
   };
+
+  const userDotPosition = userAveragePrediction ? convertToPercent(userAveragePrediction) : null;
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 gap-8">
@@ -74,7 +91,7 @@ export default function ThankYouPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-center">How your forecast compares</CardTitle>
-          <CardDescription className="text-center">This chart shows the average forecast from all previous visitors.</CardDescription>
+          <CardDescription className="text-center">This chart shows the average forecast from all previous visitors. Your forecast is the blue dot.</CardDescription>
         </CardHeader>
         <CardContent>
             {isLoading ? (
@@ -104,11 +121,31 @@ export default function ThankYouPage() {
                                 />
                             );
                         })}
+
+                        {userDotPosition && (
+                            <div
+                                title="Your average prediction"
+                                className="absolute w-3 h-3 bg-blue-500 rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-white"
+                                style={{
+                                    left: `${userDotPosition.x}%`,
+                                    top: `${userDotPosition.y}%`,
+                                    zIndex: 1,
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             )}
         </CardContent>
       </Card>
     </main>
+  );
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ThankYouContent />
+    </Suspense>
   );
 }
