@@ -34,7 +34,7 @@ const initialItems: DraggableItem[] = [
   { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50 },
   { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50 },
   { id: 6, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50 },
-  { id: 7, name: "PINNOCCHIO", image: "/images/PINNOCCHIO.png", x: 50, y: 50 },
+  { id: 7, name: "PINOCCHIO", image: "/images/PINOCCHIO.png", x: 50, y: 50 },
   { id: 8, name: "RUR", image: "/images/RUR.png", x: 50, y: 50 },
   { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50 },
 ];
@@ -170,7 +170,7 @@ export default function Home() {
           <p className="text-muted-foreground mt-2">Drag the images to map your predictions.</p>
         </div>
 
-        <div className="w-full max-w-2xl flex flex-col items-center gap-8">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-8">
           <div className="relative w-full text-foreground/80 font-bold uppercase text-sm tracking-wider">
             <p className="absolute -top-6 left-1/2 -translate-x-1/2">Hope</p>
             <p className="absolute -bottom-6 left-1/2 -translate-x-1/2">Fear</p>
@@ -186,7 +186,7 @@ export default function Home() {
                   key={item.id}
                   ref={el => itemRef.current.set(item.id, el)}
                   className={cn(
-                    "absolute w-16 h-16 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg cursor-grab transition-all duration-100 ease-in-out bg-white/10 border-2 border-white/50",
+                    "absolute w-32 h-32 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white font-bold shadow-lg cursor-grab transition-all duration-100 ease-in-out bg-white/10 border-2 border-white/50",
                     { 'scale-110 shadow-2xl': activeId === item.id }
                   )}
                   style={{
@@ -197,7 +197,7 @@ export default function Home() {
                   onMouseDown={(e) => handleDragStart(item.id, e)}
                   onTouchStart={(e) => handleDragStart(item.id, e)}
                 >
-                  <Image src={item.image} alt={item.name} width={48} height={48} className="object-contain pointer-events-none" />
+                  <Image src={item.image} alt={item.name} width={96} height={96} className="object-contain pointer-events-none" />
                 </div>
               ))}
             </div>
