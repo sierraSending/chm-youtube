@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -63,6 +63,16 @@ export default function Home() {
   const router = useRouter();
 
   const allItemsMoved = movedItems.size === initialItems.length;
+
+  const averagePosition = useMemo(() => {
+    if (items.length === 0) return { x: 50, y: 50 };
+    const totalX = items.reduce((sum, item) => sum + item.x, 0);
+    const totalY = items.reduce((sum, item) => sum + item.y, 0);
+    return {
+      x: totalX / items.length,
+      y: totalY / items.length,
+    };
+  }, [items]);
 
   useEffect(() => {
     setIsClient(true);
@@ -220,7 +230,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#B22222_100%)]">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#4c0000_0%,#d9534f_100%)]">
         <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
@@ -252,6 +262,14 @@ export default function Home() {
                   <p className="font-bold text-lg">Drag the images to map your predictions.</p>
                 </div>
               )}
+
+              <div
+                className="absolute w-4 h-4 bg-black rounded-full -translate-x-1/2 -translate-y-1/2 z-0"
+                style={{
+                  left: `${averagePosition.x}%`,
+                  top: `${averagePosition.y}%`,
+                }}
+              />
 
               {items.map(item => (
                 <div
@@ -355,5 +373,3 @@ export default function Home() {
     </>
   );
 }
-
-    
