@@ -51,6 +51,8 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const [movedItems, setMovedItems] = useState(new Set<number>());
+  const [showDragHint, setShowDragHint] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
@@ -69,6 +71,9 @@ export default function Home() {
 
   const handleDragEnd = useCallback(() => {
     if (activeId === null) return;
+
+    setMovedItems(prev => new Set(prev).add(activeId));
+
     document.body.style.cursor = 'default';
     const itemElement = itemRef.current.get(activeId);
     if (itemElement) {
@@ -77,6 +82,12 @@ export default function Home() {
     }
     setActiveId(null);
   }, [activeId]);
+  
+  useEffect(() => {
+    if (movedItems.size > 3) {
+      setShowDragHint(false);
+    }
+  }, [movedItems]);
 
   const handleDragMove = useCallback((e: globalThis.MouseEvent | globalThis.TouchEvent) => {
     if (activeId === null || !gridRef.current) return;
@@ -164,11 +175,10 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-screen w-full flex-col p-4 sm:p-6 md:p-8 font-sans overflow-hidden">
+      <main className="flex h-screen w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8">
         <header className="flex items-start justify-between mb-4 z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope & Fear Forecast</h1>
-            <p className="text-muted-foreground mt-1 text-sm">Drag the images to map your predictions.</p>
           </div>
           <Button onClick={() => setIsModalOpen(true)} size="lg">
             Submit Predictions
@@ -185,6 +195,12 @@ export default function Home() {
             <div ref={gridRef} className="relative w-full h-full bg-background/20 rounded-lg shadow-inner overflow-hidden z-10">
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
+
+               {showDragHint && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
+                  <p className="font-bold text-lg">Drag the images to map your predictions.</p>
+                </div>
+              )}
 
               {items.map(item => (
                 <div
