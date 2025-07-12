@@ -74,7 +74,11 @@ export default function Home() {
     const itemElement = itemRef.current.get(id);
     if (itemElement) {
       itemElement.style.zIndex = '100';
-      itemElement.style.cursor = 'grabbing';
+    }
+    // Set cursor on the circular element
+    const circularElement = itemElement?.querySelector('[data-drag-handle]');
+    if (circularElement) {
+        (circularElement as HTMLElement).style.cursor = 'grabbing';
     }
   }, []);
 
@@ -89,7 +93,10 @@ export default function Home() {
     const itemElement = itemRef.current.get(activeId);
     if (itemElement) {
       itemElement.style.zIndex = '10';
-      itemElement.style.cursor = 'grab';
+      const circularElement = itemElement?.querySelector('[data-drag-handle]');
+      if (circularElement) {
+          (circularElement as HTMLElement).style.cursor = 'grab';
+      }
     }
     setActiveId(null);
   }, [activeId]);
@@ -220,7 +227,7 @@ export default function Home() {
                   key={item.id}
                   ref={el => itemRef.current.set(item.id, el)}
                   className={cn(
-                    "absolute w-32 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center cursor-grab transition-all duration-100 ease-in-out",
+                    "absolute w-32 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center transition-all duration-100 ease-in-out",
                     { 'scale-110 shadow-2xl z-50': activeId === item.id }
                   )}
                   style={{
@@ -228,11 +235,14 @@ export default function Home() {
                     top: `${item.y}%`,
                     zIndex: activeId === item.id ? 100 : 10,
                   }}
-                  onMouseDown={(e) => handleDragStart(item.id, e)}
-                  onTouchStart={(e) => handleDragStart(item.id, e)}
                   onDoubleClick={() => handleDoubleClick(item)}
                 >
-                   <div className="w-24 h-24 rounded-full bg-white/10 border-2 border-white/50 flex items-center justify-center shadow-lg">
+                   <div 
+                    data-drag-handle 
+                    className="w-24 h-24 rounded-full bg-white/10 border-2 border-white/50 flex items-center justify-center shadow-lg cursor-grab"
+                    onMouseDown={(e) => handleDragStart(item.id, e)}
+                    onTouchStart={(e) => handleDragStart(item.id, e)}
+                  >
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
                   </div>
                   <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md">{item.name}</p>
