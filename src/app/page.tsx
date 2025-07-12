@@ -175,14 +175,14 @@ export default function Home() {
           </Button>
         </header>
 
-        <div className="flex-1 flex items-center justify-center w-full h-full">
-          <div className="relative w-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider">
-            <p className="absolute -top-6 left-1/2 -translate-x-1/2">Hope</p>
-            <p className="absolute -bottom-6 left-1/2 -translate-x-1/2">Fear</p>
+        <div className="flex-1 flex items-center justify-center w-full h-full relative">
+          <div className="relative w-full h-full max-w-4xl text-foreground/80 font-bold uppercase text-sm tracking-wider flex flex-col">
+            <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
+            <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
             <p className="absolute top-1/2 -left-8 md:-left-12 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
             <p className="absolute top-1/2 -right-8 md:-right-12 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
             
-            <div ref={gridRef} className="relative w-full aspect-square bg-background/20 rounded-lg shadow-inner overflow-hidden z-10">
+            <div ref={gridRef} className="relative w-full h-full bg-background/20 rounded-lg shadow-inner overflow-hidden z-10">
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
