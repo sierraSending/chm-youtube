@@ -56,7 +56,6 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const [showDragHint, setShowDragHint] = useState(true);
   const [movedItems, setMovedItems] = useState<Set<number>>(new Set());
   const [doubleClickHintId, setDoubleClickHintId] = useState<number | null>(null);
   const hintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -103,8 +102,6 @@ export default function Home() {
   const handleDragEnd = useCallback(() => {
     if (activeId === null) return;
     
-    setShowDragHint(false);
-
     if (movedItems.size === 0) {
       setDoubleClickHintId(activeId);
       hintTimeoutRef.current = setTimeout(() => {
@@ -231,7 +228,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#4c0000_0%,#d9534f_100%)]">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden p-4 sm:p-6 md:p-8 bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#d9534f_100%)]">
         <header className="flex items-start justify-between z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
@@ -258,7 +255,7 @@ export default function Home() {
               <div className="absolute top-1/2 left-0 w-full h-px bg-foreground/30" />
               <div className="absolute left-1/2 top-0 w-px h-full bg-foreground/30" />
 
-               {showDragHint && movedItems.size < 1 && (
+               {movedItems.size < 1 && (
                 <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
                   <p className="font-bold text-lg">Drag the images to map your predictions.</p>
                 </div>
