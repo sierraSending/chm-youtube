@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, type MouseEvent, type TouchEvent as ReactTouchEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { saveTestTimestamp } from "@/app/actions";
+import { savePredictions } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -99,16 +99,16 @@ export default function Home() {
     setIsSubmitting(true);
     
     try {
-      await saveTestTimestamp();
+      await savePredictions(items);
       toast({
         title: "Success!",
-        description: "Your test submission has been recorded.",
+        description: "Your predictions have been recorded.",
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem submitting your test data.",
+        description: "There was a problem submitting your predictions.",
       });
     } finally {
       setIsSubmitting(false);
