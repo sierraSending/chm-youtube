@@ -179,6 +179,7 @@ export default function Home() {
         <header className="flex items-start justify-between mb-4 z-20">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Hope &amp; Fear Forecast</h1>
+            <p className="text-muted-foreground">double click on an item to learn more</p>
           </div>
           <Button onClick={() => setIsSubmitModalOpen(true)} size="lg">
             Submit Predictions
@@ -292,4 +293,3 @@ export default function Home() {
     </>
   );
 }
-
