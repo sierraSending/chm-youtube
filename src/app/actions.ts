@@ -29,10 +29,17 @@ export async function savePredictions(items: DraggableItem[]) {
   try {
     const predictions: Record<string, Prediction> = {};
     items.forEach((item) => {
-      // Extract the color name (e.g., 'blue') from the Tailwind class (e.g., 'bg-blue-500')
       const colorName = item.color.split('-')[1];
       if (colorName) {
-        predictions[colorName] = { x: item.x, y: item.y };
+        // Convert from 0-100 scale to -50 to +50 scale and round to integer
+        const x = Math.round(item.x - 50);
+        const y = Math.round(item.y - 50);
+        
+        // The y-axis in browser coordinates is inverted (0 is top, 100 is bottom).
+        // To match a standard Cartesian grid (positive Y is up), we invert it.
+        const cartesianY = y * -1;
+
+        predictions[colorName] = { x: x, y: cartesianY };
       }
     });
 
