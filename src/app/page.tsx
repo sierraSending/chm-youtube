@@ -273,7 +273,7 @@ export default function Home() {
 
                {movedItems.size < 1 && (
                 <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-black/80 p-4 rounded-lg shadow-2xl text-center transition-opacity duration-500">
-                  <p className="font-bold text-lg">Drag the images to map your predictions.</p>
+                  <p className="font-bold text-lg">1. Drag the images to map your predictions.</p>
                 </div>
               )}
 
