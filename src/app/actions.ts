@@ -1,3 +1,4 @@
+
 'use server';
 
 import {
@@ -67,10 +68,21 @@ export async function savePredictions(payload: SavePredictionsPayload) {
       averagePrediction: finalAveragePrediction,
       createdAt: serverTimestamp() as Timestamp,
     };
+    
+    const emailData = {
+        email: email,
+        marketingOptIn: joinCommunity,
+        createdAt: serverTimestamp() as Timestamp,
+    };
 
-    await addDoc(collection(db, 'visitorPrediction'), submissionData);
+    // Save to the two different collections
+    await Promise.all([
+        addDoc(collection(db, 'visitorPrediction'), submissionData),
+        addDoc(collection(db, 'visitorEmails'), emailData)
+    ]);
+    
   } catch (error) {
-    console.error('Error writing document to "visitorPrediction": ', error);
+    console.error('Error writing document: ', error);
     throw new Error('Could not save predictions to Firebase.');
   }
 }
