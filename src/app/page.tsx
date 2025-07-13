@@ -256,7 +256,7 @@ export default function Home() {
               'animate-pulse-glow': allItemsMoved,
             })}
           >
-            Submit Predictions
+            Make Predictions
           </Button>
         </header>
 
@@ -328,7 +328,7 @@ export default function Home() {
           <DialogHeader className="text-left">
             <DialogTitle>Almost there!</DialogTitle>
             <DialogDescription>
-              Please provide your email to save your forecast.
+              Please provide your email to make your forecast.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -384,7 +384,7 @@ export default function Home() {
                 htmlFor="anonymize"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Keep my predictions anonymous and separate from my email.
+                Keep my predictions <span className="font-bold">anonymous</span> and separate from my email.
               </label>
             </div>
             
@@ -398,14 +398,14 @@ export default function Home() {
                 htmlFor="join"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Join the community for updates
+                Get a full report of emailed after a 1,000 predictions. Also very occasional, really good, other content.
               </label>
             </div>
           </div>
           <DialogFooter>
             <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full">
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              {isSubmitting ? 'Saving...' : 'Save Forecast'}
+              {isSubmitting ? 'Saving...' : 'See how yours compares'}
             </Button>
           </DialogFooter>
         </DialogContent>
