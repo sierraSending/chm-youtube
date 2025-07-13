@@ -26,7 +26,7 @@ type Prediction = {
 };
 
 type Submission = {
-  email: string;
+  email?: string; // Optional now
   joinCommunity: boolean;
   createdAt: Timestamp;
   predictions: Record<string, Prediction>;
@@ -37,11 +37,12 @@ export type SavePredictionsPayload = {
     items: DraggableItem[];
     email: string;
     joinCommunity: boolean;
+    anonymizeData: boolean;
     averagePrediction: { x: number; y: number };
 }
 
 export async function savePredictions(payload: SavePredictionsPayload) {
-  const { items, email, joinCommunity, averagePrediction } = payload;
+  const { items, email, joinCommunity, anonymizeData, averagePrediction } = payload;
   try {
     const predictions: Record<string, Prediction> = {};
     items.forEach((item) => {
@@ -62,16 +63,20 @@ export async function savePredictions(payload: SavePredictionsPayload) {
     }
 
     const submissionData: Submission = {
-      email,
       joinCommunity,
       predictions,
       averagePrediction: finalAveragePrediction,
       createdAt: serverTimestamp() as Timestamp,
     };
     
+    if (!anonymizeData) {
+        submissionData.email = email;
+    }
+
     const emailData = {
         email: email,
         marketingOptIn: joinCommunity,
+        dataOptOut: anonymizeData,
         createdAt: serverTimestamp() as Timestamp,
     };
 

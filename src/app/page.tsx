@@ -56,6 +56,7 @@ export default function Home() {
   const [selectedItem, setSelectedItem] = useState<DraggableItem | null>(null);
   const [email, setEmail] = useState("");
   const [joinCommunity, setJoinCommunity] = useState(false);
+  const [anonymizeData, setAnonymizeData] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [termsError, setTermsError] = useState("");
@@ -216,6 +217,7 @@ export default function Home() {
         items,
         email,
         joinCommunity,
+        anonymizeData,
         averagePrediction: averagePosition
       };
       await savePredictions(payload);
@@ -372,6 +374,20 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="anonymize" 
+                checked={anonymizeData}
+                onCheckedChange={(checked) => setAnonymizeData(Boolean(checked))}
+              />
+              <label
+                htmlFor="anonymize"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Keep my predictions anonymous and separate from my email.
+              </label>
+            </div>
+            
             <div className="flex items-center space-x-2">
               <Checkbox 
                 id="join" 
