@@ -126,3 +126,46 @@ export async function getAveragePredictions(): Promise<Prediction[]> {
     throw new Error("Could not fetch average predictions.");
   }
 }
+
+
+export type AggregatedPrediction = {
+    name: string;
+    avgX: number;
+    avgY: number;
+    count: number;
+}
+export async function getAggregatedPredictions(): Promise<Record<string, AggregatedPrediction>> {
+  try {
+    const querySnapshot = await getDocs(collection(db, "visitorPrediction"));
+    const itemTotals: Record<string, { totalX: number; totalY: number; count: number }> = {};
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.predictions) {
+        for (const [itemName, prediction] of Object.entries(data.predictions as Record<string, Prediction>)) {
+            if (!itemTotals[itemName]) {
+                itemTotals[itemName] = { totalX: 0, totalY: 0, count: 0 };
+            }
+            itemTotals[itemName].totalX += prediction.x;
+            itemTotals[itemName].totalY += prediction.y;
+            itemTotals[itemName].count++;
+        }
+      }
+    });
+    
+    const aggregatedPredictions: Record<string, AggregatedPrediction> = {};
+    for(const [itemName, totals] of Object.entries(itemTotals)) {
+        aggregatedPredictions[itemName] = {
+            name: itemName,
+            avgX: totals.totalX / totals.count,
+            avgY: totals.totalY / totals.count,
+            count: totals.count,
+        }
+    }
+
+    return aggregatedPredictions;
+  } catch (error) {
+    console.error("Error getting aggregated predictions: ", error);
+    throw new Error("Could not fetch aggregated predictions.");
+  }
+}

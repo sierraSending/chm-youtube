@@ -5,9 +5,9 @@ import { Suspense, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Loader2 } from 'lucide-react';
-import { incrementCounter, getAveragePredictions } from '@/app/actions';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { CheckCircle, Loader2, TrendingUp, ChevronsRight, ChevronsLeft } from 'lucide-react';
+import { incrementCounter, getAveragePredictions, getAggregatedPredictions, type AggregatedPrediction } from '@/app/actions';
 
 type Prediction = {
   x: number; // -50 to 50
@@ -16,6 +16,7 @@ type Prediction = {
 
 function ThankYouContent() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [aggregatedPredictions, setAggregatedPredictions] = useState<AggregatedPrediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
 
@@ -33,10 +34,15 @@ function ThankYouContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    async function fetchPredictions() {
+    async function fetchAllPredictions() {
+      setIsLoading(true);
       try {
-        const preds = await getAveragePredictions();
-        setPredictions(preds);
+        const [avgPreds, aggPreds] = await Promise.all([
+            getAveragePredictions(),
+            getAggregatedPredictions()
+        ]);
+        setPredictions(avgPreds);
+        setAggregatedPredictions(Object.values(aggPreds));
       } catch (error) {
         console.error("Failed to fetch predictions:", error);
       } finally {
@@ -44,8 +50,24 @@ function ThankYouContent() {
       }
     }
 
-    fetchPredictions();
+    fetchAllPredictions();
   }, []);
+  
+  const topRankedItems = useMemo(() => {
+    if (aggregatedPredictions.length === 0) {
+      return { hopeful: null, likely: null, unlikely: null };
+    }
+    const sortedByHope = [...aggregatedPredictions].sort((a, b) => b.avgY - a.avgY);
+    const sortedByLikely = [...aggregatedPredictions].sort((a, b) => b.avgX - a.avgX);
+    const sortedByUnlikely = [...aggregatedPredictions].sort((a, b) => a.avgX - b.avgX);
+
+    return {
+      hopeful: sortedByHope[0],
+      likely: sortedByLikely[0],
+      unlikely: sortedByUnlikely[0],
+    };
+  }, [aggregatedPredictions]);
+
 
   const handleCTAClick = () => {
     incrementCounter('thankYouCTAclick');
@@ -137,6 +159,49 @@ function ThankYouContent() {
                 </div>
             )}
         </CardContent>
+      </Card>
+
+      <Card className="w-full max-w-md">
+        <CardHeader>
+            <CardTitle className="text-xl font-bold text-center">Community Insights</CardTitle>
+            <CardDescription className="text-center">The top ranked items based on all predictions.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            {isLoading ? (
+                <div className="flex justify-center items-center h-48">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : (
+                <div className="grid gap-4 text-sm">
+                    <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
+                        <div className='flex items-center gap-2'>
+                           <TrendingUp className="h-5 w-5 text-green-500" />
+                           <span className="font-semibold">Most Hopeful:</span>
+                        </div>
+                        <span className="font-bold text-base">{topRankedItems.hopeful?.name}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
+                        <div className='flex items-center gap-2'>
+                            <ChevronsRight className="h-5 w-5 text-blue-500" />
+                            <span className="font-semibold">Most Likely:</span>
+                        </div>
+                        <span className="font-bold text-base">{topRankedItems.likely?.name}</span>
+                    </div>
+                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
+                        <div className='flex items-center gap-2'>
+                            <ChevronsLeft className="h-5 w-5 text-red-500" />
+                            <span className="font-semibold">Most Unlikely:</span>
+                        </div>
+                        <span className="font-bold text-base">{topRankedItems.unlikely?.name}</span>
+                    </div>
+                </div>
+            )}
+        </CardContent>
+         { !isLoading && aggregatedPredictions.length > 0 && 
+            <CardFooter>
+                <p className="text-xs text-muted-foreground text-center w-full">Based on {predictions.length} predictions.</p>
+            </CardFooter>
+        }
       </Card>
     </main>
   );
