@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { CheckCircle, Loader2, TrendingUp, TrendingDown, ChevronsRight, ChevronsLeft } from 'lucide-react';
+import { CheckCircle, Loader2, TrendingUp, TrendingDown, ChevronsRight, ChevronsLeft, Share2 } from 'lucide-react';
 import { incrementCounter, getAveragePredictions, getAggregatedPredictions, type AggregatedPrediction } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
 
 type Prediction = {
   x: number; // -50 to 50
@@ -19,6 +20,7 @@ function ThankYouContent() {
   const [aggregatedPredictions, setAggregatedPredictions] = useState<AggregatedPrediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
+  const { toast } = useToast();
 
   const userAveragePrediction = useMemo(() => {
     const avgX = searchParams.get('avgX');
@@ -69,9 +71,40 @@ function ThankYouContent() {
     };
   }, [aggregatedPredictions]);
 
-
   const handleCTAClick = () => {
     incrementCounter('thankYouCTAclick');
+  };
+
+  const handleShare = async () => {
+    const shareUrl = window.location.origin;
+    const shareData = {
+      title: 'My AI Predictions',
+      text: "I just made my AI predictions. See how your forecast compares!",
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        throw new Error('Web Share API not supported');
+      }
+    } catch (err) {
+      // Fallback to copying to clipboard
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast({
+          title: "Link Copied!",
+          description: "The link has been copied to your clipboard.",
+        });
+      } catch (copyErr) {
+        toast({
+            variant: "destructive",
+            title: "Could not copy link",
+            description: "Please copy the link from your browser's address bar.",
+        });
+      }
+    }
   };
   
   // Convert from -50 to +50 to 0-100 percentage for CSS positioning
@@ -97,8 +130,8 @@ function ThankYouContent() {
             Thank you! We appreciate you taking the time to share your perspective.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <Button asChild>
+        <CardContent className="flex flex-col sm:flex-row gap-4">
+          <Button asChild className="flex-1">
             <Link 
               href="https://www.computerhistory.org/collections/catalog" 
               target="_blank" 
@@ -107,6 +140,10 @@ function ThankYouContent() {
             >
               Explore the CHM collection
             </Link>
+          </Button>
+          <Button onClick={handleShare} variant="outline" className="flex-1">
+            <Share2 className="mr-2 h-4 w-4" />
+            Share with friends
           </Button>
         </CardContent>
       </Card>
