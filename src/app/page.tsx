@@ -32,7 +32,7 @@ type DraggableItem = {
 };
 
 const initialItems: DraggableItem[] = [
-    { id: 1, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50, description: "Introduced in 1952, Astro Boy, known in Japan as Mighty Atom (鉄腕アトム), is one of the most successful manga and anime characters. Created by a man who had lost his son, Astro Boy is a human-like robot boy that can think, talk, and experience emotions." },
+    { id: 9, name: "ASTROBOY", image: "/images/ASTROBOY.png", x: 50, y: 50, description: "Introduced in 1952, Astro Boy, known in Japan as Mighty Atom (鉄腕アトム), is one of the most successful manga and anime characters. Created by a man who had lost his son, Astro Boy is a human-like robot boy that can think, talk, and experience emotions." },
     { id: 8, name: "PINOCCHIO", image: "/images/PINOCCHIO.png", x: 50, y: 50, description: "Carlo Collodi published his children's novel Pinocchio in 1883. A toymaker's wish is granted for his wooden puppet to become a real boy. Pinocchio gains the power of speech but, like today's chatbots, has trouble with truthfulness." },
     { id: 7, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50, description: "The 'Maschinenmensch' (Machine-Human) from Fritz Lang’s 1927 silent film 'Metropolis' is one of cinema's earliest and most iconic robots. Taking the form of a human woman, this robot explores the fear of AI inciting chaos and replacing humanity, a theme still relevant today." },
     { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50, description: "In the 'Iron Man' films, J.A.R.V.I.S. (Just A Rather Very Intelligent System) is Tony Stark's AI assistant, helping him design and control his suits. J.A.R.V.I.S. represents the dream of a helpful, witty AI companion and has inspired real-world entrepreneurs like Mark Zuckerberg." },
@@ -270,7 +270,7 @@ export default function Home() {
             <Button 
               onClick={handleSubmitClick} 
               size="lg"
-              className={cn('text-black hover:bg-white/90', {
+              className={cn('bg-white text-black hover:bg-white/90', {
                 'animate-pulse-glow': allItemsMoved,
               })}
             >
@@ -346,10 +346,10 @@ export default function Home() {
       </main>
 
       <Dialog open={isSubmitModalOpen} onOpenChange={setIsSubmitModalOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-card text-card-foreground">
+        <DialogContent className="sm:max-w-[425px] bg-red-950 text-white border-red-800">
           <DialogHeader className="text-left">
             <DialogTitle>Almost there!</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-red-200">
               Please provide your email to make your forecast.
             </DialogDescription>
           </DialogHeader>
@@ -365,9 +365,9 @@ export default function Home() {
                   if (emailError) validateEmail(e.target.value);
                 }}
                 required
-                className="bg-background text-foreground placeholder:text-muted-foreground"
+                className="bg-red-900 border-red-700 text-white placeholder:text-red-300 focus:ring-red-500"
               />
-              {emailError && <p className="text-sm text-destructive">{emailError}</p>}
+              {emailError && <p className="text-sm text-red-300">{emailError}</p>}
             </div>
             
             <div className="flex items-start space-x-2">
@@ -378,7 +378,7 @@ export default function Home() {
                   setAgreedToTerms(Boolean(checked));
                   if (termsError) setTermsError("");
                 }}
-                className="border-card-foreground"
+                className="border-red-400 data-[state=checked]:bg-white data-[state=checked]:text-red-950"
               />
               <div className="grid gap-1.5 leading-none">
                 <label
@@ -386,15 +386,15 @@ export default function Home() {
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I agree to the{" "}
-                  <Link href="https://computerhistory.org/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                  <Link href="https://computerhistory.org/terms/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-200">
                     terms and conditions
                   </Link>{" "}
                   and{" "}
-                  <Link href="https://computerhistory.org/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                  <Link href="https://computerhistory.org/privacy/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-200">
                     privacy policy
                   </Link>.
                 </label>
-                {termsError && <p className="text-sm text-destructive">{termsError}</p>}
+                {termsError && <p className="text-sm text-red-300">{termsError}</p>}
               </div>
             </div>
 
@@ -403,7 +403,7 @@ export default function Home() {
                 id="anonymize" 
                 checked={anonymizeData}
                 onCheckedChange={(checked) => setAnonymizeData(Boolean(checked))}
-                className="border-card-foreground"
+                className="border-red-400 data-[state=checked]:bg-white data-[state=checked]:text-red-950"
               />
               <label
                 htmlFor="anonymize"
@@ -418,7 +418,7 @@ export default function Home() {
                 id="join" 
                 checked={joinCommunity}
                 onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
-                className="border-card-foreground"
+                className="border-red-400 data-[state=checked]:bg-white data-[state=checked]:text-red-950"
               />
               <label
                 htmlFor="join"
@@ -429,7 +429,7 @@ export default function Home() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full text-primary-foreground bg-[#ea032b] hover:bg-[#ea032b]/90">
+            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full text-white bg-[#ea032b] hover:bg-[#ea032b]/90">
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               {isSubmitting ? 'Saving...' : 'See how yours compares'}
             </Button>
@@ -469,3 +469,5 @@ export default function Home() {
     </>
   );
 }
+
+    
