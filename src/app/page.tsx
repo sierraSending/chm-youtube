@@ -446,6 +446,9 @@ export default function Home() {
 
       <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
         <DialogContent className="max-w-3xl p-0">
+            <DialogHeader>
+              <DialogTitle className="sr-only">Video Player</DialogTitle>
+            </DialogHeader>
             <div className="aspect-video">
                  <iframe 
                     className="w-full h-full rounded-lg"
