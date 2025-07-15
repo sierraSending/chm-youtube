@@ -212,28 +212,28 @@ function ThankYouContent() {
                 <div className="grid gap-4 text-sm">
                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                           <Sparkles className="h-5 w-5 text-green-500" />
+                           <Sparkles className="h-5 w-5 text-foreground" />
                            <span className="font-semibold">Most Hopeful:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.hopeful?.name}</span>
                     </div>
                      <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                           <Ghost className="h-5 w-5 text-destructive" />
+                           <Ghost className="h-5 w-5 text-foreground" />
                            <span className="font-semibold">Most Fearful:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.fearful?.name}</span>
                     </div>
                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                            <Target className="h-5 w-5 text-blue-500" />
+                            <Target className="h-5 w-5 text-foreground" />
                             <span className="font-semibold">Most Likely:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.likely?.name}</span>
                     </div>
                      <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                            <HelpCircle className="h-5 w-5 text-red-500" />
+                            <HelpCircle className="h-5 w-5 text-foreground" />
                             <span className="font-semibold">Most Unlikely:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.unlikely?.name}</span>
