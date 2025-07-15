@@ -141,7 +141,7 @@ function ThankYouContent() {
             </Link>
           </Button>
           <Button onClick={handleShare} variant="outline" className="flex-1 text-white border-white hover:bg-white/20 hover:text-white">
-            <Share2 className="mr-2 h-4 w-4" />
+            <Share2 className="mr-2 h-4 w-4 text-white" />
             Share with friends
           </Button>
         </CardContent>
@@ -159,8 +159,8 @@ function ThankYouContent() {
                 </div>
             ) : (
                 <div className="relative w-full h-64 text-foreground/80 font-bold uppercase text-xs tracking-wider flex flex-col p-6">
-                    <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hope</p>
-                    <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fear</p>
+                    <p className="absolute -top-1 left-1/2 -translate-x-1/2">Hopeful</p>
+                    <p className="absolute -bottom-1 left-1/2 -translate-x-1/2">Fearful</p>
                     <p className="absolute top-1/2 -left-3 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap">Unlikely</p>
                     <p className="absolute top-1/2 -right-3 -translate-y-1/2 rotate-90 origin-center whitespace-nowrap">Likely</p>
                     <div className="relative w-full h-full rounded-lg shadow-inner bg-muted/20">
@@ -258,3 +258,5 @@ export default function ThankYouPage() {
     </Suspense>
   );
 }
+
+    
