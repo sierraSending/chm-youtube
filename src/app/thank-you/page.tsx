@@ -122,7 +122,7 @@ function ThankYouContent() {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
             <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
           </div>
-          <CardTitle className="mt-4 text-2xl font-bold">
+          <CardTitle className="mt-4 text-2xl font-bold text-foreground">
             Your forecast has been successfully submitted.
           </CardTitle>
           <CardDescription>
@@ -140,7 +140,7 @@ function ThankYouContent() {
               Explore the CHM collection
             </Link>
           </Button>
-          <Button onClick={handleShare} variant="outline" className="flex-1">
+          <Button onClick={handleShare} variant="outline" className="flex-1 text-white border-white hover:bg-white/20 hover:text-white">
             <Share2 className="mr-2 h-4 w-4" />
             Share with friends
           </Button>
@@ -258,5 +258,3 @@ export default function ThankYouPage() {
     </Suspense>
   );
 }
-
-    
