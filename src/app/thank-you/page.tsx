@@ -117,7 +117,7 @@ function ThankYouContent() {
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 gap-8">
-      <Card className="w-full max-w-md text-center">
+      <Card className="w-full max-w-md text-center bg-transparent border-none shadow-none">
         <CardHeader>
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
             <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
@@ -147,7 +147,7 @@ function ThankYouContent() {
         </CardContent>
       </Card>
 
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-transparent border-border">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-center">How your forecast compares</CardTitle>
           <CardDescription className="text-center">This chart shows the average forecast from all previous visitors. Your forecast is the red dot.</CardDescription>
@@ -198,7 +198,7 @@ function ThankYouContent() {
         </CardContent>
       </Card>
 
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-transparent border-border">
         <CardHeader>
             <CardTitle className="text-xl font-bold text-center">Community Insights</CardTitle>
             <CardDescription className="text-center">The top ranked items based on all predictions.</CardDescription>
