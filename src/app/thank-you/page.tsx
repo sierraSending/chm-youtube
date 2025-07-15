@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { CheckCircle, Loader2, TrendingUp, TrendingDown, ChevronsRight, ChevronsLeft, Share2 } from 'lucide-react';
+import { CheckCircle, Loader2, Share2, Sparkles, Ghost, Target, HelpCircle } from 'lucide-react';
 import { incrementCounter, getAveragePredictions, getAggregatedPredictions, type AggregatedPrediction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 
@@ -61,13 +61,12 @@ function ThankYouContent() {
     }
     const sortedByHope = [...aggregatedPredictions].sort((a, b) => b.avgY - a.avgY);
     const sortedByLikely = [...aggregatedPredictions].sort((a, b) => b.avgX - a.avgX);
-    const sortedByUnlikely = [...aggregatedPredictions].sort((a, b) => a.avgX - b.avgX);
 
     return {
       hopeful: sortedByHope[0],
       fearful: sortedByHope[sortedByHope.length - 1],
       likely: sortedByLikely[0],
-      unlikely: sortedByUnlikely[0],
+      unlikely: sortedByLikely[sortedByLikely.length - 1],
     };
   }, [aggregatedPredictions]);
 
@@ -213,28 +212,28 @@ function ThankYouContent() {
                 <div className="grid gap-4 text-sm">
                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                           <TrendingUp className="h-5 w-5 text-green-500" />
+                           <Sparkles className="h-5 w-5 text-green-500" />
                            <span className="font-semibold">Most Hopeful:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.hopeful?.name}</span>
                     </div>
                      <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                           <TrendingDown className="h-5 w-5 text-destructive" />
+                           <Ghost className="h-5 w-5 text-destructive" />
                            <span className="font-semibold">Most Fearful:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.fearful?.name}</span>
                     </div>
                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                            <ChevronsRight className="h-5 w-5 text-blue-500" />
+                            <Target className="h-5 w-5 text-blue-500" />
                             <span className="font-semibold">Most Likely:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.likely?.name}</span>
                     </div>
                      <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
-                            <ChevronsLeft className="h-5 w-5 text-red-500" />
+                            <HelpCircle className="h-5 w-5 text-red-500" />
                             <span className="font-semibold">Most Unlikely:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.unlikely?.name}</span>
