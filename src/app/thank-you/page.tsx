@@ -130,7 +130,7 @@ function ThankYouContent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-4">
-          <Button asChild className="flex-1">
+          <Button asChild className="flex-1 bg-white text-black hover:bg-white/90">
             <Link 
               href="https://www.computerhistory.org/collections/catalog" 
               target="_blank" 
@@ -149,7 +149,7 @@ function ThankYouContent() {
 
       <Card className="w-full max-w-md bg-transparent border-border">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-center">How your forecast compares</CardTitle>
+          <CardTitle className="text-xl font-bold text-center text-foreground">How your forecast compares</CardTitle>
           <CardDescription className="text-center">This chart shows the average forecast from all previous visitors. Your forecast is the red dot.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -200,7 +200,7 @@ function ThankYouContent() {
 
       <Card className="w-full max-w-md bg-transparent border-border">
         <CardHeader>
-            <CardTitle className="text-xl font-bold text-center">Community Insights</CardTitle>
+            <CardTitle className="text-xl font-bold text-center text-foreground">Community Insights</CardTitle>
             <CardDescription className="text-center">The top ranked items based on all predictions.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -258,3 +258,5 @@ export default function ThankYouPage() {
     </Suspense>
   );
 }
+
+    
