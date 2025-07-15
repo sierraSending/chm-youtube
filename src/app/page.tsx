@@ -258,7 +258,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#8B0000_0%,#d9534f_100%)]">
+      <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#ea032b_0%,_#1a1a1a_100%)]">
         <header className="flex items-center justify-between z-20 p-4 sm:p-6 md:p-8">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
@@ -327,7 +327,7 @@ export default function Home() {
                   >
                     <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain pointer-events-none" />
                   </div>
-                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md bg-[#8B0000] px-2 py-1 rounded-md">{item.name}</p>
+                  <p className="mt-2 text-xs font-bold tracking-wider uppercase text-white drop-shadow-md bg-red-800/80 px-2 py-1 rounded-md">{item.name}</p>
                   
                   {doubleClickHintId === item.id && (
                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 p-2 rounded-lg shadow-2xl text-center transition-opacity duration-500 animate-in fade-in-0">
