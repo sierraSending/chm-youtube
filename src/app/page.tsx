@@ -37,9 +37,9 @@ const initialItems: DraggableItem[] = [
     { id: 7, name: "METROPOLIS", image: "/images/METROPOLIS.png", x: 50, y: 50, description: "The 'Maschinenmensch' (Machine-Human) from Fritz Lang’s 1927 silent film 'Metropolis' is one of cinema's earliest and most iconic robots. Taking the form of a human woman, this robot explores the fear of AI inciting chaos and replacing humanity, a theme still relevant today." },
     { id: 5, name: "JARVIS", image: "/images/JARVIS.png", x: 50, y: 50, description: "In the 'Iron Man' films, J.A.R.V.I.S. (Just A Rather Very Intelligent System) is Tony Stark's AI assistant, helping him design and control his suits. J.A.R.V.I.S. represents the dream of a helpful, witty AI companion and has inspired real-world entrepreneurs like Mark Zuckerberg." },
     { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50, description: "The golem is a protective figure from Jewish folklore. Over the centuries, this human-like creature has taken different forms and meanings. Fashioned from mud or clay, the golem can't speak but is animated by special Hebrew words written on paper and placed in or on it. Popular games like Minecraft and Pokémon include characters inspired by the golem." },
+    { id: 10, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
     { id: 6, name: "RUR", image: "/images/RUR.png", x: 50, y: 50, description: "Czech playwright Karel Čapek's 1920 play R.U.R.—Rossum's Universal Robots—became an instant international sensation and introduced the word \"robot.\" The play imagines chemically manufactured factory workers called \"roboti\" (from the Czech for \"forced labor\"). When they revolt against humanity, their makers wish they'd made them speak different languages so that they might have been turned against one another." },
     { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50, description: "In the 2013 film 'Her,' a lonely writer develops a relationship with Samantha, an advanced AI operating system. The film explores themes of love, connection, and what it means to be human in an increasingly digital world, inspired by early web-based chatbots like A.L.I.C.E." },
-    { id: 10, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
     { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "The sentient computer HAL 9000 is the star of Stanley Kubrick's 1968 film '2001: A Space Odyssey.' HAL controls the systems of a spaceship and can communicate with the human crew. As the film progresses, HAL's calm, conversational voice becomes a source of terror, famously saying, 'I'm sorry, Dave. I'm afraid I've an issue.'" },
 ];
 
@@ -261,7 +261,7 @@ export default function Home() {
       <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#ea032b_0%,_#1a1a1a_100%)]">
         <header className="flex items-center justify-between z-20 p-4 sm:p-6 md:p-8">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">Your AI Predictions</h1>
+            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden sm:block">
@@ -270,7 +270,7 @@ export default function Home() {
             <Button 
               onClick={handleSubmitClick} 
               size="lg"
-              className={cn({
+              className={cn('text-black hover:bg-white/90', {
                 'animate-pulse-glow': allItemsMoved,
               })}
             >
@@ -346,7 +346,7 @@ export default function Home() {
       </main>
 
       <Dialog open={isSubmitModalOpen} onOpenChange={setIsSubmitModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-card text-card-foreground">
           <DialogHeader className="text-left">
             <DialogTitle>Almost there!</DialogTitle>
             <DialogDescription>
@@ -365,6 +365,7 @@ export default function Home() {
                   if (emailError) validateEmail(e.target.value);
                 }}
                 required
+                className="bg-background text-foreground placeholder:text-muted-foreground"
               />
               {emailError && <p className="text-sm text-destructive">{emailError}</p>}
             </div>
@@ -377,6 +378,7 @@ export default function Home() {
                   setAgreedToTerms(Boolean(checked));
                   if (termsError) setTermsError("");
                 }}
+                className="border-card-foreground"
               />
               <div className="grid gap-1.5 leading-none">
                 <label
@@ -401,6 +403,7 @@ export default function Home() {
                 id="anonymize" 
                 checked={anonymizeData}
                 onCheckedChange={(checked) => setAnonymizeData(Boolean(checked))}
+                className="border-card-foreground"
               />
               <label
                 htmlFor="anonymize"
@@ -415,6 +418,7 @@ export default function Home() {
                 id="join" 
                 checked={joinCommunity}
                 onCheckedChange={(checked) => setJoinCommunity(Boolean(checked))}
+                className="border-card-foreground"
               />
               <label
                 htmlFor="join"
@@ -425,7 +429,7 @@ export default function Home() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full">
+            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="w-full text-primary-foreground bg-[#ea032b] hover:bg-[#ea032b]/90">
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               {isSubmitting ? 'Saving...' : 'See how yours compares'}
             </Button>

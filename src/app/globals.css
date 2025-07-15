@@ -45,12 +45,12 @@ body {
   .dark {
     --background: 0 100% 27.3%;
     --foreground: 0 0% 100%;
-    --card: 0 100% 27.3%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 100% 17.3%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 182 58% 23%; /* #195e61 */
-    --primary-foreground: 0 0% 100%; /* White */
+    --card: 32 43% 84%; /* #eadfd3 */
+    --card-foreground: 182 58% 23%; /* #195e61 */
+    --popover: 32 43% 84%; /* #eadfd3 */
+    --popover-foreground: 182 58% 23%; /* #195e61 */
+    --primary: 0 0% 100%; /* White */
+    --primary-foreground: 0 0% 0%; /* Black */
     --secondary: 0 100% 22.3%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 100%;
@@ -60,7 +60,7 @@ body {
     --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 100%;
-    --input: 0 100% 22.3%;
+    --input: 182 58% 23%; /* #195e61 */
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
