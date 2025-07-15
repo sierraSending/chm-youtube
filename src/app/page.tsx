@@ -39,7 +39,7 @@ const initialItems: DraggableItem[] = [
     { id: 2, name: "GOLEM", image: "/images/GOLEM.png", x: 50, y: 50, description: "The golem is a protective figure from Jewish folklore. Over the centuries, this human-like creature has taken different forms and meanings. Fashioned from mud or clay, the golem can't speak but is animated by special Hebrew words written on paper and placed in or on it. Popular games like Minecraft and Pokémon include characters inspired by the golem." },
     { id: 6, name: "RUR", image: "/images/RUR.png", x: 50, y: 50, description: "Czech playwright Karel Čapek's 1920 play R.U.R.—Rossum's Universal Robots—became an instant international sensation and introduced the word \"robot.\" The play imagines chemically manufactured factory workers called \"roboti\" (from the Czech for \"forced labor\"). When they revolt against humanity, their makers wish they'd made them speak different languages so that they might have been turned against one another." },
     { id: 4, name: "HER", image: "/images/HER.png", x: 50, y: 50, description: "In the 2013 film 'Her,' a lonely writer develops a relationship with Samantha, an advanced AI operating system. The film explores themes of love, connection, and what it means to be human in an increasingly digital world, inspired by early web-based chatbots like A.L.I.C.E." },
-    { id: 9, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
+    { id: 10, name: "TALOS", image: "/images/TALOS.png", x: 50, y: 50, description: "We have imagined human-like metal beings for millennia. Talos, an animate bronze man created by the god Hephaestus, appeared in Greek mythology. Hollywood special effects expert Ray Harryhausen created an iconic interpretation of Talos for the 1963 film Jason and the Argonauts." },
     { id: 3, name: "HAL", image: "/images/HAL.png", x: 50, y: 50, description: "The sentient computer HAL 9000 is the star of Stanley Kubrick's 1968 film '2001: A Space Odyssey.' HAL controls the systems of a spaceship and can communicate with the human crew. As the film progresses, HAL's calm, conversational voice becomes a source of terror, famously saying, 'I'm sorry, Dave. I'm afraid I've an issue.'" },
 ];
 
@@ -248,11 +248,11 @@ export default function Home() {
      <Button 
         onClick={() => setIsVideoModalOpen(true)} 
         variant="ghost"
-        size="icon"
         className="text-white hover:text-white hover:bg-white/20"
         aria-label="Play video"
       >
-        <PlayCircle className="h-8 w-8" />
+        <PlayCircle className="h-6 w-6" />
+        <span className="ml-2 font-semibold">Watch Video</span>
     </Button>
   )
 
