@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { CheckCircle, Loader2, TrendingUp, ChevronsRight, ChevronsLeft } from 'lucide-react';
+import { CheckCircle, Loader2, TrendingUp, TrendingDown, ChevronsRight, ChevronsLeft } from 'lucide-react';
 import { incrementCounter, getAveragePredictions, getAggregatedPredictions, type AggregatedPrediction } from '@/app/actions';
 
 type Prediction = {
@@ -55,7 +55,7 @@ function ThankYouContent() {
   
   const topRankedItems = useMemo(() => {
     if (aggregatedPredictions.length === 0) {
-      return { hopeful: null, likely: null, unlikely: null };
+      return { hopeful: null, fearful: null, likely: null, unlikely: null };
     }
     const sortedByHope = [...aggregatedPredictions].sort((a, b) => b.avgY - a.avgY);
     const sortedByLikely = [...aggregatedPredictions].sort((a, b) => b.avgX - a.avgX);
@@ -63,6 +63,7 @@ function ThankYouContent() {
 
     return {
       hopeful: sortedByHope[0],
+      fearful: sortedByHope[sortedByHope.length - 1],
       likely: sortedByLikely[0],
       unlikely: sortedByUnlikely[0],
     };
@@ -179,6 +180,13 @@ function ThankYouContent() {
                            <span className="font-semibold">Most Hopeful:</span>
                         </div>
                         <span className="font-bold text-base">{topRankedItems.hopeful?.name}</span>
+                    </div>
+                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
+                        <div className='flex items-center gap-2'>
+                           <TrendingDown className="h-5 w-5 text-destructive" />
+                           <span className="font-semibold">Most Fearful:</span>
+                        </div>
+                        <span className="font-bold text-base">{topRankedItems.fearful?.name}</span>
                     </div>
                     <div className="flex items-center justify-between gap-2 p-3 bg-muted/50 rounded-lg">
                         <div className='flex items-center gap-2'>
