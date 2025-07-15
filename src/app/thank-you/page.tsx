@@ -150,7 +150,7 @@ function ThankYouContent() {
       <Card className="w-full max-w-md bg-transparent border-border">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-center text-foreground">How your forecast compares</CardTitle>
-          <CardDescription className="text-center">This chart shows the average forecast from all previous visitors. Your forecast is the red dot.</CardDescription>
+          <CardDescription className="text-center">This chart shows the average forecast from all previous visitors. Your forecast is the green dot.</CardDescription>
         </CardHeader>
         <CardContent>
             {isLoading ? (
@@ -184,7 +184,7 @@ function ThankYouContent() {
                         {userDotPosition && (
                             <div
                                 title="Your average prediction"
-                                className="absolute w-3 h-3 bg-[#ea032b] rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-white"
+                                className="absolute w-3 h-3 bg-destructive rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-white"
                                 style={{
                                     left: `${userDotPosition.x}%`,
                                     top: `${userDotPosition.y}%`,
@@ -258,5 +258,3 @@ export default function ThankYouPage() {
     </Suspense>
   );
 }
-
-    
