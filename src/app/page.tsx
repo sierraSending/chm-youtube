@@ -258,7 +258,10 @@ export default function Home() {
         aria-label="Play video"
       >
         <PlayCircle className="h-6 w-6" />
-        <span className="ml-2 font-semibold sm:hidden lg:inline">Watch</span>
+        <span className="ml-2 font-semibold">
+          <span>Watch</span>
+          <span className="hidden sm:inline">&nbsp;Video</span>
+        </span>
     </Button>
   )
 
