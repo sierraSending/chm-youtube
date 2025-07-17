@@ -258,7 +258,7 @@ export default function Home() {
         aria-label="Play video"
       >
         <PlayCircle className="h-6 w-6" />
-        <span className="ml-2 font-semibold">Watch Video</span>
+        <span className="ml-2 font-semibold sm:hidden lg:inline">Watch Video</span>
     </Button>
   )
 
@@ -266,51 +266,56 @@ export default function Home() {
     <>
       <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#ea032b_0%,_#1a1a1a_100%)]">
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between z-20 p-4 sm:p-6 md:p-8 gap-4">
-           <div className="flex items-center gap-4">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white sm:h-8 sm:w-8 h-10 w-10">
-                      <Menu className="h-8 w-8" />
-                      <span className="sr-only">Open Menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="bg-[#1a1a1a] text-white p-0 border-r-0">
-                    <div className="flex flex-col h-full">
-                        <div className="p-6">
-                            <Image
-                                src="https://placehold.co/600x400.png"
-                                alt="CHM"
-                                width={600}
-                                height={400}
-                                data-ai-hint="abstract museum"
-                                className="rounded-lg"
-                            />
-                        </div>
-                        <nav className="flex-1 px-6 space-y-2">
-                           <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
-                               <HomeIcon className="h-5 w-5" />
-                               <span className="font-semibold">Home</span>
-                           </Link>
-                           <Link href="https://www.computerhistory.org/collections/catalog" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
-                               <BookOpen className="h-5 w-5" />
-                               <span className="font-semibold">CHM Collection</span>
-                           </Link>
-                        </nav>
-                        <Separator className="bg-white/20 my-4" />
-                        <div className="p-6">
-                            <Button asChild className="w-full bg-white text-black hover:bg-white/90">
-                                <Link href="https://computerhistory.org/membership/" target="_blank" rel="noopener noreferrer">
-                                    <UserPlus className="mr-2 h-5 w-5"/>
-                                    Become a Member
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                </SheetContent>
-              </Sheet>
-              <div>
-                <p className="text-xs text-white/80 tracking-wider">CHM | Games</p>
-                <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
+           <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-4">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white sm:h-8 sm:w-8 h-10 w-10">
+                        <Menu className="h-8 w-8" />
+                        <span className="sr-only">Open Menu</span>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="bg-[#1a1a1a] text-white p-0 border-r-0">
+                      <div className="flex flex-col h-full">
+                          <div className="p-6">
+                              <Image
+                                  src="https://placehold.co/600x400.png"
+                                  alt="CHM"
+                                  width={600}
+                                  height={400}
+                                  data-ai-hint="abstract museum"
+                                  className="rounded-lg"
+                              />
+                          </div>
+                          <nav className="flex-1 px-6 space-y-2">
+                            <Link href="#" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <HomeIcon className="h-5 w-5" />
+                                <span className="font-semibold">Home</span>
+                            </Link>
+                            <Link href="https://www.computerhistory.org/collections/catalog" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <BookOpen className="h-5 w-5" />
+                                <span className="font-semibold">CHM Collection</span>
+                            </Link>
+                          </nav>
+                          <Separator className="bg-white/20 my-4" />
+                          <div className="p-6">
+                              <Button asChild className="w-full bg-white text-black hover:bg-white/90">
+                                  <Link href="https://computerhistory.org/membership/" target="_blank" rel="noopener noreferrer">
+                                      <UserPlus className="mr-2 h-5 w-5"/>
+                                      Become a Member
+                                  </Link>
+                              </Button>
+                          </div>
+                      </div>
+                  </SheetContent>
+                </Sheet>
+                <div>
+                  <p className="text-xs text-white/80 tracking-wider">CHM | Games</p>
+                  <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
+                </div>
+              </div>
+              <div className="sm:hidden">
+                 <VideoButton />
               </div>
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -388,9 +393,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-             <div className="absolute bottom-4 left-4 z-20 sm:hidden">
-                <VideoButton />
-             </div>
           </div>
         </div>
       </main>
@@ -519,5 +521,3 @@ export default function Home() {
     </>
   );
 }
-
-    
