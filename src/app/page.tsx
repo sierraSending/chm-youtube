@@ -265,7 +265,7 @@ export default function Home() {
   return (
     <>
       <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#ea032b_0%,_#1a1a1a_100%)]">
-        <header className="flex items-center justify-between z-20 p-4 sm:p-6 md:p-8">
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between z-20 p-4 sm:p-6 md:p-8 gap-4">
            <div className="flex items-center gap-4">
               <Sheet>
                 <SheetTrigger asChild>
@@ -313,14 +313,14 @@ export default function Home() {
                 <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
               </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="hidden sm:block">
               <VideoButton />
             </div>
             <Button 
               onClick={handleSubmitClick} 
               size="lg"
-              className={cn('bg-white text-black hover:bg-white/90', {
+              className={cn('w-full sm:w-auto bg-white text-black hover:bg-white/90', {
                 'animate-pulse-glow': allItemsMoved,
               })}
             >
@@ -519,3 +519,5 @@ export default function Home() {
     </>
   );
 }
+
+    
