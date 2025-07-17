@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { savePredictions, type SavePredictionsPayload, incrementCounter } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Loader2, PlayCircle } from "lucide-react";
+import { Loader2, PlayCircle, Menu } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -260,8 +260,15 @@ export default function Home() {
     <>
       <main className="flex h-svh w-full flex-col font-sans overflow-hidden bg-[radial-gradient(ellipse_at_center,_#ea032b_0%,_#1a1a1a_100%)]">
         <header className="flex items-center justify-between z-20 p-4 sm:p-6 md:p-8">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
+           <div className="flex items-center gap-4">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white sm:h-8 sm:w-8 h-10 w-10">
+                  <Menu className="h-8 w-8" />
+                  <span className="sr-only">Menu</span>
+              </Button>
+              <div>
+                <p className="text-xs text-white/80 tracking-wider">CHM | Games</p>
+                <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
+              </div>
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden sm:block">
@@ -450,7 +457,7 @@ export default function Home() {
 
       <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
         <DialogContent className="max-w-3xl p-0">
-            <DialogHeader>
+             <DialogHeader>
               <DialogTitle className="sr-only">Video Player</DialogTitle>
             </DialogHeader>
             <div className="aspect-video">
@@ -470,4 +477,5 @@ export default function Home() {
   );
 }
 
+    
     
