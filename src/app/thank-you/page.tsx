@@ -133,11 +133,10 @@ function ThankYouContent() {
                     <div className="flex flex-col h-full">
                         <div className="p-6">
                             <Image
-                                src="https://placehold.co/600x400.png"
-                                alt="CHM"
+                                src="/images/menuBanner.png"
+                                alt="CHM Banner"
                                 width={600}
                                 height={400}
-                                data-ai-hint="abstract museum"
                                 className="rounded-lg"
                             />
                         </div>
