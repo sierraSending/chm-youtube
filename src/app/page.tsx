@@ -258,7 +258,7 @@ export default function Home() {
         aria-label="Play video"
       >
         <PlayCircle className="h-6 w-6" />
-        <span className="ml-2 font-semibold sm:hidden lg:inline">Watch Video</span>
+        <span className="ml-2 font-semibold sm:hidden lg:inline">Watch</span>
     </Button>
   )
 
@@ -311,7 +311,7 @@ export default function Home() {
                 </Sheet>
                 <div>
                   <p className="text-xs text-white/80 tracking-wider">CHM | Games</p>
-                  <h1 className="text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold font-headline tracking-tight text-white">Your AI Predictions</h1>
                 </div>
               </div>
               <div className="sm:hidden">
