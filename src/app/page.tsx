@@ -283,7 +283,7 @@ export default function Home() {
                           <div className="p-6">
                               <Image
                                   src="/images/menuBanner.png"
-                                  alt="CHM Banner"
+                                  alt="Hope and Fear AI Characters Banner"
                                   width={600}
                                   height={400}
                                   className="rounded-lg"
@@ -331,7 +331,7 @@ export default function Home() {
                 'animate-pulse-glow': allItemsMoved,
               })}
             >
-              Make Predictions
+              Save Predictions
             </Button>
           </div>
         </header>
