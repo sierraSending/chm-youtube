@@ -74,6 +74,7 @@ export default function Home() {
   const router = useRouter();
 
   const allItemsMoved = movedItems.size === initialItems.length;
+  const hasMovedAtLeastOneItem = movedItems.size > 0;
 
   const averagePosition = useMemo(() => {
     if (items.length === 0) return { x: 50, y: 50 };
@@ -201,6 +202,13 @@ export default function Home() {
   };
   
   const handleSubmitClick = () => {
+    if (!hasMovedAtLeastOneItem) {
+        toast({
+            variant: "destructive",
+            description: "Please move at least one item to save your predictions.",
+        });
+        return;
+    }
     incrementCounter('submitButtonClick');
     setIsSubmitModalOpen(true);
   }
@@ -252,13 +260,19 @@ export default function Home() {
 
   const VideoButton = () => (
      <Button 
-        onClick={() => setIsVideoModalOpen(true)} 
-        variant="ghost"
-        className="text-white hover:text-white hover:bg-white/20"
+        onClick={() => setIsVideoModalOpen(true)}
+        variant={hasMovedAtLeastOneItem ? "ghost" : "default"}
+        className={cn(
+          'font-semibold',
+          {
+            'bg-white text-black hover:bg-white/90': !hasMovedAtLeastOneItem,
+            'text-white hover:text-white hover:bg-white/20': hasMovedAtLeastOneItem
+          }
+        )}
         aria-label="Play video"
       >
         <PlayCircle className="h-6 w-6" />
-        <span className="ml-2 font-semibold">
+        <span className="ml-2">
           <span>Watch</span>
           <span className="hidden sm:inline">&nbsp;Video</span>
         </span>
@@ -327,7 +341,10 @@ export default function Home() {
             <Button 
               onClick={handleSubmitClick} 
               size="lg"
-              className={cn('w-full sm:w-auto bg-white text-black hover:bg-white/90', {
+              variant={hasMovedAtLeastOneItem ? "default" : "ghost"}
+              className={cn('w-full sm:w-auto font-semibold', {
+                'bg-white text-black hover:bg-white/90': hasMovedAtLeastOneItem,
+                'text-white hover:text-white hover:bg-white/20': !hasMovedAtLeastOneItem,
                 'animate-pulse-glow': allItemsMoved,
               })}
             >
